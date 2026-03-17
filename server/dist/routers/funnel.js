@@ -2,7 +2,7 @@ import { z } from "zod";
 import { nanoid } from "nanoid";
 import { router, publicProcedure } from "../trpc/trpc.js";
 import { query } from "../db/client.js";
-import { buildCarpandaUrl, CARPANDA_LINKS, } from "shared";
+import shared from "shared";
 import { confirmPayment } from "../services/confirmPayment.js";
 const createOrderSchema = z.object({
     firstName: z.string().min(1),
@@ -103,7 +103,7 @@ export const funnelRouter = router({
         ]);
         const orderId = order.rows[0].id;
         const linkKey = discountApplied === 20 ? "mainDiscount" : "main";
-        const url = buildCarpandaUrl(linkKey, orderId, input.email, input.firstName, false);
+        const url = shared.buildCarpandaUrl(linkKey, orderId, input.email, input.firstName, false);
         return { orderId, url };
     }),
     confirmCarpandaPayment: publicProcedure
@@ -134,8 +134,8 @@ export const funnelRouter = router({
         const o = await query(`SELECT email, "firstName" FROM funnel_orders WHERE id = $1`, [input.orderId]);
         const row = o.rows[0];
         if (!row)
-            return { url: CARPANDA_LINKS[input.upsell] };
-        const url = buildCarpandaUrl(input.upsell, input.orderId, row.email, row.firstName, false);
+            return { url: shared.CARPANDA_LINKS[input.upsell] };
+        const url = shared.buildCarpandaUrl(input.upsell, input.orderId, row.email, row.firstName, false);
         return { url };
     }),
     getOrderCredentials: publicProcedure

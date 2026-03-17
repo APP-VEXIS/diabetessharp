@@ -2,11 +2,8 @@ import { z } from "zod";
 import { nanoid } from "nanoid";
 import { router, publicProcedure } from "../trpc/trpc.js";
 import { query } from "../db/client.js";
-import {
-  buildCarpandaUrl,
-  CARPANDA_LINKS,
-  type CarpandaLinkKey,
-} from "shared";
+import shared from "shared";
+import type { CarpandaLinkKey } from "shared";
 import { confirmPayment } from "../services/confirmPayment.js";
 
 const createOrderSchema = z.object({
@@ -138,7 +135,7 @@ export const funnelRouter = router({
     );
     const orderId = order.rows[0].id;
     const linkKey: CarpandaLinkKey = discountApplied === 20 ? "mainDiscount" : "main";
-    const url = buildCarpandaUrl(linkKey, orderId, input.email, input.firstName, false);
+    const url = shared.buildCarpandaUrl(linkKey, orderId, input.email, input.firstName, false);
     return { orderId, url };
   }),
 
@@ -176,8 +173,8 @@ export const funnelRouter = router({
         [input.orderId]
       );
       const row = o.rows[0];
-      if (!row) return { url: CARPANDA_LINKS[input.upsell] };
-      const url = buildCarpandaUrl(
+      if (!row) return { url: shared.CARPANDA_LINKS[input.upsell] };
+      const url = shared.buildCarpandaUrl(
         input.upsell as CarpandaLinkKey,
         input.orderId,
         row.email,
