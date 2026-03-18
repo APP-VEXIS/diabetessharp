@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 import {
   MEMORY_RECIPES,
   MEAL_PLAN_7_DAY,
@@ -19,54 +20,85 @@ import {
   getTotalsByMealType,
   MEAL_TYPE_LABELS,
 } from "../../data/mealLogs";
+import {
+  Utensils,
+  CalendarDays,
+  Calendar,
+  ClipboardList,
+  ShoppingCart,
+  CheckSquare,
+  Sparkles,
+  Clock,
+  BarChart3,
+  Flame,
+  Dumbbell,
+  Candy,
+  Zap,
+  Camera,
+  FolderOpen,
+  Download,
+  AlertTriangle,
+  FileText,
+  RefreshCw,
+  Sunrise,
+  Sun,
+  Moon,
+  Apple,
+} from "lucide-react";
 
-const TABS = [
-  { id: "recipes", label: "Recipes", icon: "🍽️" },
-  { id: "mealplan", label: "Meal Plan", icon: "📅" },
-  { id: "planner", label: "Planner", icon: "📋" },
-  { id: "shopping", label: "Shopping", icon: "🛒" },
-  { id: "checklist", label: "Checklist", icon: "✅" },
-  { id: "ai", label: "AI Recipe", icon: "✨" },
-  { id: "today", label: "Today", icon: "🕐" },
-  { id: "history", label: "History", icon: "📊" },
+const TABS: { id: string; label: string; Icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
+  { id: "recipes", label: "Recipes", Icon: Utensils },
+  { id: "mealplan", label: "Meal Plan", Icon: CalendarDays },
+  { id: "planner", label: "Planner", Icon: ClipboardList },
+  { id: "shopping", label: "Shopping", Icon: ShoppingCart },
+  { id: "checklist", label: "Checklist", Icon: CheckSquare },
+  { id: "ai", label: "AI Recipe", Icon: Sparkles },
+  { id: "today", label: "Today", Icon: Clock },
+  { id: "history", label: "History", Icon: BarChart3 },
 ];
 
 /** Diabetes Planner PDFs: download + print. Paths under /planner/ in public. */
-const PLANNER_FILES = [
+const PLANNER_FILES: {
+  id: string;
+  title: string;
+  description: string;
+  file: string;
+  Icon: React.ComponentType<{ size?: number; className?: string }>;
+}[] = [
   {
     id: "diabetes-planner",
     title: "Diabetes Planner (main)",
     description: "Weekly planner to record meals, blood sugar, medications, and notes. Use it to track your daily routine.",
     file: "/planner/diabetes-planner.pdf",
-    icon: "📋",
+    Icon: ClipboardList,
   },
   {
     id: "food-list",
     title: "Food list (green / yellow / red)",
     description: "US Letter guide with foods classified by glycemic impact: green (enjoy in moderation), yellow and red (caution).",
     file: "/planner/food-list-green-yellow-red.pdf",
-    icon: "🥗",
+    Icon: Utensils,
   },
   {
     id: "meal-ideas",
     title: "Meal ideas for diabetics",
     description: "Dish and combination ideas to vary your menu while keeping blood sugar under control.",
     file: "/planner/meal-ideas.pdf",
-    icon: "🍽️",
+    Icon: Utensils,
   },
   {
     id: "cookbook",
     title: "E-book: 500 recipes for diabetics",
     description: "Collection of recipes adapted for blood sugar control. Use as a reference to plan your week.",
     file: "/planner/500-diabetic-cookbook.pdf",
-    icon: "📖",
+    Icon: ClipboardList,
   },
   {
     id: "bonus",
     title: "Bonus pages",
     description: "Extra material: tables, tips, and pages to print and add to your planner.",
     file: "/planner/bonus-pages.pdf",
-    icon: "✨",
+    Icon: Sparkles,
   },
 ];
 
@@ -108,12 +140,12 @@ function RecipeDetail({ recipe, onClose }: { recipe: MemoryRecipe; onClose: () =
           </div>
 
           <div className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-            <h4 className="text-xs font-semibold text-[var(--color-accent)] mb-1">💡 Ingredient tips</h4>
+            <h4 className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Ingredient tips</h4>
             <p className="text-xs text-[var(--color-text-muted)]">{recipe.ingredientTips}</p>
           </div>
 
           <div className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-            <h4 className="text-xs font-semibold text-[var(--color-accent)] mb-1">⚡ Quick prep</h4>
+            <h4 className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Quick prep</h4>
             <p className="text-xs text-[var(--color-text-muted)]">{recipe.quickPrepTip}</p>
           </div>
 
@@ -338,13 +370,13 @@ export function NutritionPage() {
             htmlFor={photoInputCameraId}
             className="px-4 py-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] text-sm font-medium hover:bg-[var(--color-surface-hover)] transition-colors flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
           >
-            <span aria-hidden>📷</span> Tirar foto
+            <Camera size={16} aria-hidden /> Tirar foto
           </label>
           <label
             htmlFor={photoInputFileId}
             className="px-4 py-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] text-sm font-medium hover:bg-[var(--color-surface-hover)] transition-colors flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
           >
-            <span aria-hidden>📁</span> Escolher do computador
+            <FolderOpen size={16} aria-hidden /> Escolher do computador
           </label>
         </div>
       </div>
@@ -377,8 +409,9 @@ export function NutritionPage() {
                   )}
                   {analyzeResult && !analyzeLoading && (
                     <div className="space-y-4">
-                      <div className="rounded-xl bg-[var(--color-warning-soft)] border border-[var(--color-warning)]/40 px-4 py-3 text-sm text-[var(--color-text)]">
-                        <strong>⚠️ Valores estimados.</strong> As calorias e o açúcar são calculados a partir da imagem e servem apenas como referência. Use para acompanhar o dia e o relatório; não substituem orientação médica.
+                      <div className="rounded-xl bg-[var(--color-warning-soft)] border border-[var(--color-warning)]/40 px-4 py-3 text-sm text-[var(--color-text)] flex items-start gap-2">
+                        <AlertTriangle size={16} className="text-[var(--color-warning)] shrink-0 mt-0.5" aria-hidden />
+                        <span><strong>Valores estimados.</strong> As calorias e o açúcar são calculados a partir da imagem e servem apenas como referência. Use para acompanhar o dia e o relatório; não substituem orientação médica.</span>
                       </div>
                       <div className="grid grid-cols-3 gap-3">
                         <div className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] p-3 text-center">
@@ -440,9 +473,18 @@ export function NutritionPage() {
         </div>
       )}
 
+      <HowToUseBanner
+        pageKey="nutrition"
+        steps={[
+          "Browse the tabs: Recipes, Meal Plan, Today's intake and History.",
+          "Take a food photo under 'Today' for AI-estimated calories and macros.",
+          "Use the Meal Plan tab to plan your week and generate a printable shopping list.",
+        ]}
+      />
+
       {/* Weekly recipes update notice */}
       <div className="mb-6 rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)]/20 px-4 py-3 flex flex-wrap items-start gap-3">
-        <span className="text-2xl shrink-0" aria-hidden>🔄</span>
+        <RefreshCw size={22} className="text-[var(--color-accent)] shrink-0 mt-0.5" aria-hidden />
         <div>
           <p className="font-semibold text-[var(--color-text)] text-sm">New recipes every week</p>
           <p className="text-sm text-[var(--color-text-muted)] mt-0.5 leading-relaxed">
@@ -453,22 +495,22 @@ export function NutritionPage() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <div className="glass-card p-4 text-center">
-          <div className="text-lg mb-0.5">🔥</div>
+          <Flame size={18} className="text-orange-400 mx-auto mb-0.5" aria-hidden />
           <div className="font-display font-bold text-lg text-[var(--color-text)]">{todayTotals.calories}</div>
           <div className="text-[10px] text-[var(--color-text-muted)]">Calorias hoje</div>
         </div>
         <div className="glass-card p-4 text-center">
-          <div className="text-lg mb-0.5">⚡</div>
+          <Dumbbell size={18} className="text-[var(--color-accent)] mx-auto mb-0.5" aria-hidden />
           <div className="font-display font-bold text-lg text-[var(--color-text)]">{todayTotals.protein}g</div>
           <div className="text-[10px] text-[var(--color-text-muted)]">Proteína</div>
         </div>
         <div className="glass-card p-4 text-center">
-          <div className="text-lg mb-0.5">🍬</div>
+          <Candy size={18} className="text-pink-400 mx-auto mb-0.5" aria-hidden />
           <div className="font-display font-bold text-lg text-[var(--color-text)]">{todayTotals.sugar}g</div>
           <div className="text-[10px] text-[var(--color-text-muted)]">Açúcar (est.)</div>
         </div>
         <div className="glass-card p-4 text-center">
-          <div className="text-lg mb-0.5">✅</div>
+          <CheckSquare size={18} className="text-[var(--color-success)] mx-auto mb-0.5" aria-hidden />
           <div className="font-display font-bold text-lg text-[var(--color-text)]">{Object.values(checked).filter(Boolean).length}</div>
           <div className="text-[10px] text-[var(--color-text-muted)]">Checklist</div>
         </div>
@@ -482,11 +524,11 @@ export function NutritionPage() {
             onClick={() => setActiveTab(tab.id)}
             title={tab.label}
             aria-label={tab.label}
-            className={`shrink-0 flex flex-col items-center justify-center min-w-[56px] w-14 py-2 rounded-xl transition-all ${
+            className={`shrink-0 flex flex-col items-center justify-center min-w-[56px] w-14 py-2 rounded-xl transition-colors ${
               activeTab === tab.id ? "nav-active text-[var(--color-accent-text)]" : "bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
             }`}
           >
-            <span className="text-xl leading-none mb-1" aria-hidden>{tab.icon}</span>
+            <tab.Icon size={20} aria-hidden className="mb-1 shrink-0" />
             <span className="text-[10px] font-medium leading-tight text-center max-w-full truncate px-0.5">{tab.label}</span>
           </button>
         ))}
@@ -502,7 +544,7 @@ export function NutritionPage() {
                 key={f.value}
                 type="button"
                 onClick={() => setMealFilter(f.value)}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-all ${
+                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-colors ${
                   mealFilter === f.value ? "nav-active text-[var(--color-accent-text)]" : "bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                 }`}
               >
@@ -545,10 +587,10 @@ export function NutritionPage() {
 
       {/* Diabetes Planner — download & print PDFs */}
       {activeTab === "planner" && (
-        <div className="space-y-6 text-black">
+        <div className="space-y-6 text-[var(--color-text-primary)]">
           <div className="rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)]/20 p-4 space-y-3">
-            <h2 className="text-base font-semibold text-black">How to use and print</h2>
-            <ul className="text-sm text-black space-y-2 list-disc list-inside">
+            <h2 className="text-base font-semibold text-[var(--color-text-primary)]">How to use and print</h2>
+            <ul className="text-sm text-[var(--color-text-primary)] space-y-2 list-disc list-inside">
               <li><strong>Download:</strong> Tap &quot;Download PDF&quot; on each material. The file will be saved to your device.</li>
               <li><strong>Print:</strong> Open the PDF on your phone or computer and use the &quot;Print&quot; option (or Share → Print). We recommend A4 or Letter paper and color printing for the green/yellow/red list.</li>
               <li><strong>Daily use:</strong> Use the main Diabetes Planner to record meals, blood sugar, and medications. The food list helps you choose what to eat; the e-book and meal ideas help you plan the week.</li>
@@ -556,30 +598,32 @@ export function NutritionPage() {
             </ul>
           </div>
           <div className="space-y-4">
-            <h2 className="text-base font-semibold text-black">Materials to download and print</h2>
+            <h2 className="text-base font-semibold text-[var(--color-text-primary)]">Materials to download and print</h2>
             {PLANNER_FILES.map((item) => (
               <div
                 key={item.id}
                 className="glass-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4"
               >
-                <span className="text-3xl shrink-0" aria-hidden>{item.icon}</span>
+                <div className="w-12 h-12 rounded-xl bg-[var(--color-accent-soft)] flex items-center justify-center shrink-0">
+                  <item.Icon size={24} className="text-[var(--color-accent)]" aria-hidden />
+                </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-black text-sm sm:text-base">{item.title}</h3>
-                  <p className="text-sm text-black mt-1">{item.description}</p>
+                  <h3 className="font-semibold text-[var(--color-text-primary)] text-sm sm:text-base">{item.title}</h3>
+                  <p className="text-sm text-[var(--color-text-primary)] mt-1">{item.description}</p>
                 </div>
                 <a
                   href={item.file}
                   download={item.file.split("/").pop()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="shrink-0 px-4 py-2.5 rounded-xl bg-[var(--color-accent)] text-black text-sm font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                  className="btn btn-primary shrink-0 text-sm py-2.5 px-4 justify-center"
                 >
-                  <span aria-hidden>⬇</span> Download PDF
+                  <Download size={15} aria-hidden /> Download PDF
                 </a>
               </div>
             ))}
           </div>
-          <p className="text-xs text-black">
+          <p className="text-xs text-[var(--color-text-primary)]">
             These materials are for personal use and diabetes management support only. Always consult your doctor or dietitian.
           </p>
         </div>
@@ -626,9 +670,9 @@ export function NutritionPage() {
             <button
               type="button"
               onClick={openPrintShoppingList}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[var(--gradient-accent)] text-white font-semibold text-sm shadow-lg shadow-[var(--color-accent-glow)]/40 hover:opacity-95 hover:shadow-[var(--shadow-glow)] transition-all border-2 border-[var(--color-accent)]"
+              className="btn btn-primary text-sm"
             >
-              <span className="text-lg">📄</span>
+              <FileText size={16} aria-hidden />
               <span>Download your list as PDF here</span>
             </button>
           </div>
@@ -740,8 +784,8 @@ export function NutritionPage() {
           {CHECKLIST_BY_MEAL.map((section) => (
             <div key={section.meal} className="glass-card overflow-hidden">
               <div className="px-4 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface)]/50 flex items-center gap-2">
-                <span className="text-lg">
-                  {section.meal === "breakfast" ? "🌅" : section.meal === "lunch" ? "☀️" : section.meal === "dinner" ? "🌙" : "🥜"}
+                <span className="text-[var(--color-accent)]" aria-hidden>
+                  {section.meal === "breakfast" ? <Sunrise size={18} /> : section.meal === "lunch" ? <Sun size={18} /> : section.meal === "dinner" ? <Moon size={18} /> : <Apple size={18} />}
                 </span>
                 <h3 className="font-semibold text-[var(--color-text)]">{section.label}</h3>
                 <span className="text-xs text-[var(--color-text-muted)] ml-auto">
@@ -795,7 +839,7 @@ export function NutritionPage() {
               type="button"
               onClick={handleGenerateRecipe}
               disabled={!aiInput.trim() || aiLoading}
-              className="w-full py-3 rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {aiLoading ? (
                 <>
@@ -803,7 +847,7 @@ export function NutritionPage() {
                   Generating...
                 </>
               ) : (
-                <>✨ Generate recipe</>
+                <>Generate recipe</>
               )}
             </button>
           </div>
@@ -849,8 +893,8 @@ export function NutritionPage() {
                   className="flex flex-wrap items-center justify-between gap-2 p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]"
                 >
                   <span className="font-medium text-[var(--color-text)] capitalize">{MEAL_TYPE_LABELS[entry.mealType]}</span>
-                  <span className="text-sm text-[var(--color-text-muted)]">
-                    🔥 {entry.calories} kcal · ⚡ {entry.protein}g · 🍬 {entry.sugar}g (est.)
+                  <span className="text-sm text-[var(--color-text-muted)] flex items-center gap-1.5 flex-wrap">
+                    <Flame size={13} aria-hidden />{entry.calories} kcal · <Zap size={13} aria-hidden />{entry.protein}g · <Candy size={13} aria-hidden />{entry.sugar}g (est.)
                   </span>
                 </li>
               ))}
@@ -870,11 +914,11 @@ export function NutritionPage() {
   );
 }
 
-const REPORT_KINDS = [
-  { id: "meal" as const, label: "Por refeição", icon: "🍽️" },
-  { id: "day" as const, label: "Por dia", icon: "📅" },
-  { id: "month" as const, label: "Por mês", icon: "📆" },
-  { id: "year" as const, label: "Por ano", icon: "📊" },
+const REPORT_KINDS: { id: "meal" | "day" | "month" | "year"; label: string; Icon: React.ComponentType<{ size?: number }> }[] = [
+  { id: "meal", label: "Por refeição", Icon: Utensils },
+  { id: "day", label: "Por dia", Icon: CalendarDays },
+  { id: "month", label: "Por mês", Icon: Calendar },
+  { id: "year", label: "Por ano", Icon: BarChart3 },
 ];
 
 function NutritionReportView({ logsVersion }: { logsVersion: number }) {
@@ -893,7 +937,7 @@ function NutritionReportView({ logsVersion }: { logsVersion: number }) {
         Relatório de calorias e açúcar a partir das fotos analisadas. Valores estimados.
       </p>
       <div className="flex flex-wrap gap-2">
-        {REPORT_KINDS.map(({ id, label, icon }) => (
+        {REPORT_KINDS.map(({ id, label, Icon }) => (
           <button
             key={id}
             type="button"
@@ -904,7 +948,7 @@ function NutritionReportView({ logsVersion }: { logsVersion: number }) {
                 : "bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-surface-hover)]"
             }`}
           >
-            <span aria-hidden>{icon}</span> {label}
+            <Icon size={14} aria-hidden /> {label}
           </button>
         ))}
       </div>
@@ -916,7 +960,9 @@ function NutritionReportView({ logsVersion }: { logsVersion: number }) {
             {byMealToday.map((row) => (
               <li key={row.mealType} className="flex justify-between items-center p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
                 <span className="font-medium text-[var(--color-text)]">{row.label}</span>
-                <span className="text-sm text-[var(--color-text-muted)]">🔥 {row.calories} kcal · 🍬 {row.sugar}g</span>
+                <span className="text-sm text-[var(--color-text-muted)] flex items-center gap-1.5">
+                  <Flame size={13} aria-hidden />{row.calories} kcal · <Candy size={13} aria-hidden />{row.sugar}g
+                </span>
               </li>
             ))}
           </ul>
@@ -925,7 +971,9 @@ function NutritionReportView({ logsVersion }: { logsVersion: number }) {
             {byMealAll.map((row) => (
               <li key={row.mealType} className="flex justify-between items-center p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
                 <span className="font-medium text-[var(--color-text)]">{row.label}</span>
-                <span className="text-sm text-[var(--color-text-muted)]">🔥 {row.calories} kcal · 🍬 {row.sugar}g</span>
+                <span className="text-sm text-[var(--color-text-muted)] flex items-center gap-1.5">
+                  <Flame size={13} aria-hidden />{row.calories} kcal · <Candy size={13} aria-hidden />{row.sugar}g
+                </span>
               </li>
             ))}
           </ul>
@@ -939,7 +987,9 @@ function NutritionReportView({ logsVersion }: { logsVersion: number }) {
             {byDay.map((row) => (
               <li key={row.date} className="flex justify-between items-center p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
                 <span className="font-medium text-[var(--color-text)]">{row.date}</span>
-                <span className="text-sm text-[var(--color-text-muted)]">🔥 {row.calories} kcal · 🍬 {row.sugar}g</span>
+                <span className="text-sm text-[var(--color-text-muted)] flex items-center gap-1.5">
+                  <Flame size={13} aria-hidden />{row.calories} kcal · <Candy size={13} aria-hidden />{row.sugar}g
+                </span>
               </li>
             ))}
           </ul>
@@ -953,7 +1003,9 @@ function NutritionReportView({ logsVersion }: { logsVersion: number }) {
             {byMonth.map((row) => (
               <li key={row.monthKey} className="flex justify-between items-center p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
                 <span className="font-medium text-[var(--color-text)]">{row.monthKey} ({row.days} dias)</span>
-                <span className="text-sm text-[var(--color-text-muted)]">🔥 {row.calories} kcal · 🍬 {row.sugar}g</span>
+                <span className="text-sm text-[var(--color-text-muted)] flex items-center gap-1.5">
+                  <Flame size={13} aria-hidden />{row.calories} kcal · <Candy size={13} aria-hidden />{row.sugar}g
+                </span>
               </li>
             ))}
           </ul>
@@ -967,7 +1019,9 @@ function NutritionReportView({ logsVersion }: { logsVersion: number }) {
             {byYear.map((row) => (
               <li key={row.year} className="flex justify-between items-center p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
                 <span className="font-medium text-[var(--color-text)]">{row.year} ({row.days} dias)</span>
-                <span className="text-sm text-[var(--color-text-muted)]">🔥 {row.calories} kcal · 🍬 {row.sugar}g</span>
+                <span className="text-sm text-[var(--color-text-muted)] flex items-center gap-1.5">
+                  <Flame size={13} aria-hidden />{row.calories} kcal · <Candy size={13} aria-hidden />{row.sugar}g
+                </span>
               </li>
             ))}
           </ul>

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 const HOW_IT_WORKS = `Take a photo of the place where you put something (drawer, shelf, hook, box) and add a short label — e.g. "House keys – top drawer". When you forget where something is, open this page and check your photos. Over time you'll build a visual map of where you keep daily items.`;
 
@@ -193,7 +194,7 @@ export function PhotosPage() {
               <button
                 type="button"
                 onClick={savePendingPhoto}
-                className="flex-1 py-2.5 rounded-xl bg-[var(--gradient-accent)] text-white font-semibold text-sm"
+                className="flex-1 py-2.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm"
               >
                 Save photo
               </button>
@@ -244,7 +245,7 @@ export function PhotosPage() {
               <button
                 type="button"
                 onClick={() => { updatePhotoLabel(selectedPhoto.id, editingLabel); setSelectedPhoto(null); }}
-                className="flex-1 py-2.5 rounded-xl bg-[var(--gradient-accent)] text-white font-semibold text-sm"
+                className="flex-1 py-2.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm"
               >
                 Save description
               </button>
@@ -276,7 +277,7 @@ export function PhotosPage() {
             <button
               type="button"
               onClick={capturePhoto}
-              className="px-6 py-3 rounded-xl bg-[var(--gradient-accent)] text-white font-semibold text-sm shadow-lg"
+              className="px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm shadow-lg"
             >
               Capture
             </button>
@@ -291,7 +292,6 @@ export function PhotosPage() {
       )}
 
       <div className="mb-6 flex items-center gap-2">
-        <span className="text-xl">📷</span>
         <div>
           <h1 className="text-xl font-display font-bold text-[var(--color-text)]">Remember Where You Put Things</h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-0.5">
@@ -300,19 +300,24 @@ export function PhotosPage() {
         </div>
       </div>
 
+      <HowToUseBanner
+        pageKey="ns-photos"
+        steps={[
+          "Tap the camera icon to photograph where you put something — keys, wallet, glasses.",
+          "Add a short label so you can find it fast when you forget — e.g. 'Keys – kitchen hook'.",
+          "Photos are stored only on this device and are never uploaded.",
+        ]}
+      />
+
       {/* How it works */}
       <div className="glass-card p-5 mb-6">
-        <h3 className="text-sm font-semibold text-[var(--color-text)] mb-2 flex items-center gap-2">
-          <span>💡</span> How to use
-        </h3>
+        <h3 className="text-sm font-semibold text-[var(--color-text)] mb-2">How to use</h3>
         <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{HOW_IT_WORKS}</p>
       </div>
 
       {/* What to photograph */}
       <div className="glass-card p-5 mb-6">
-        <h3 className="text-sm font-semibold text-[var(--color-text)] mb-3 flex items-center gap-2">
-          <span>📌</span> Suggestions — what to photograph
-        </h3>
+        <h3 className="text-sm font-semibold text-[var(--color-text)] mb-3">What to photograph</h3>
         <p className="text-xs text-[var(--color-text-muted)] mb-4">
           Tap a suggestion to open the camera and take a photo — the label will be set for you. Add a description so you remember where you put it.
         </p>
@@ -325,7 +330,7 @@ export function PhotosPage() {
                   setNewLabel(s.item);
                   openCamera();
                 }}
-                className="w-full flex gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-left hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-all"
+                className="w-full flex gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-left hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-colors"
               >
                 <span className="text-2xl shrink-0" aria-hidden>{s.icon}</span>
                 <div className="min-w-0 flex-1">
@@ -342,11 +347,9 @@ export function PhotosPage() {
       {/* Add memory photo */}
       <div className="glass-card p-5 mb-6">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2">
-            <span>📷</span> Add a memory photo
-          </h3>
-          <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded bg-[var(--color-success)]/20 text-[var(--color-success)] border border-[var(--color-success)]/30">
-            🔒 Private
+          <h3 className="text-sm font-semibold text-[var(--color-text)]">Add a memory photo</h3>
+          <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded bg-[var(--color-success-soft)] text-[var(--color-success)]">
+            Private
           </span>
         </div>
         <div className="rounded-xl bg-[var(--color-info)]/10 border border-[var(--color-info)]/30 p-3 mb-4 flex items-start gap-2">
@@ -380,7 +383,7 @@ export function PhotosPage() {
           <button
             type="button"
             onClick={openCamera}
-            className="flex flex-col items-center justify-center gap-2 min-h-[100px] rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-all text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+            className="flex flex-col items-center justify-center gap-2 min-h-[100px] rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
           >
             <span className="text-3xl">📷</span>
             <span className="font-medium text-sm">Take Photo</span>
@@ -388,7 +391,7 @@ export function PhotosPage() {
           <button
             type="button"
             onClick={handleFileClick}
-            className="flex flex-col items-center justify-center gap-2 min-h-[100px] rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-all text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+            className="flex flex-col items-center justify-center gap-2 min-h-[100px] rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
           >
             <span className="text-3xl">📁</span>
             <span className="font-medium text-sm">Choose File</span>
@@ -424,7 +427,7 @@ export function PhotosPage() {
                 key={p.id}
                 type="button"
                 onClick={() => openPhotoDetail(p)}
-                className="rounded-xl overflow-hidden bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-accent)]/50 transition-all text-left"
+                className="rounded-xl overflow-hidden bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-accent)]/50 transition-colors text-left"
               >
                 {p.imageUrl ? (
                   <img

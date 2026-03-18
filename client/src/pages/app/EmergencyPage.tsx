@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 export function EmergencyPage() {
   return (
@@ -10,6 +11,15 @@ export function EmergencyPage() {
         </div>
         <Link to="/app/dashboard" className="text-sm text-[var(--color-accent)] hover:underline">← Dashboard</Link>
       </div>
+
+      <HowToUseBanner
+        pageKey="emergency"
+        steps={[
+          "Follow the numbered steps in order when you feel symptoms of low blood sugar.",
+          "Keep glucose tablets, juice or candy within reach as your fast-acting option.",
+          "Call emergency services if symptoms persist after 15 minutes or if you lose consciousness.",
+        ]}
+      />
 
       <div className="rounded-xl bg-[var(--color-error)]/15 border-2 border-[var(--color-error)]/50 p-4">
         <p className="font-semibold text-[var(--color-text)]">This is not medical advice. In an emergency, call 911 or your local emergency number.</p>

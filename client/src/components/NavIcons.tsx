@@ -14,11 +14,11 @@ export function IconHome() {
 export function IconExercises() {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M6.5 6.5h11M6.5 17.5h11M15 6.5l-3 5 3 5M9 6.5l3 5-3 5" />
-      <rect x="2" y="4" width="6" height="4" rx="1" />
-      <rect x="16" y="4" width="6" height="4" rx="1" />
-      <rect x="2" y="16" width="6" height="4" rx="1" />
-      <rect x="16" y="16" width="6" height="4" rx="1" />
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+      <line x1="8" y1="7" x2="16" y2="7" />
+      <line x1="8" y1="11" x2="16" y2="11" />
+      <line x1="8" y1="15" x2="12" y2="15" />
     </svg>
   );
 }
@@ -26,7 +26,9 @@ export function IconExercises() {
 export function IconDrMarcus() {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.9 12a19.79 19.79 0 0 1-3.07-8.67 2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+      <path d="M14.5 2a4.5 4.5 0 0 1 0 9" />
+      <path d="M14.5 7H19" />
     </svg>
   );
 }
@@ -34,8 +36,9 @@ export function IconDrMarcus() {
 export function IconNutrition() {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M12 2v8a4 4 0 0 1-8 0V4M12 2v8a4 4 0 0 0 8 0V4" />
-      <path d="M4 14h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z" />
+      <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+      <path d="M7 2v20" />
+      <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
     </svg>
   );
 }
@@ -43,7 +46,10 @@ export function IconNutrition() {
 export function IconProgress() {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+      <line x1="18" y1="20" x2="18" y2="10" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="6" y1="20" x2="6" y2="14" />
+      <path d="M2 20h20" />
     </svg>
   );
 }
@@ -62,9 +68,10 @@ export function IconLearn() {
 export function IconReport() {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <line x1="12" y1="20" x2="12" y2="10" />
-      <line x1="18" y1="20" x2="18" y2="4" />
-      <line x1="6" y1="20" x2="6" y2="16" />
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+      <line x1="8" y1="12" x2="8" y2="16" />
+      <line x1="12" y1="8" x2="12" y2="16" />
+      <line x1="16" y1="10" x2="16" y2="16" />
     </svg>
   );
 }
@@ -82,6 +89,9 @@ export function IconSofia() {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      <path d="M8 10h.01" />
+      <path d="M12 10h.01" />
+      <path d="M16 10h.01" />
     </svg>
   );
 }
@@ -130,4 +140,3 @@ export function IconDroplet() {
     </svg>
   );
 }
-

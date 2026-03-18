@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -168,6 +169,15 @@ export function SofiaPage() {
         <p className="text-sm text-[var(--color-text-muted)] mt-0.5">Your memory companion — recall the past together.</p>
       </div>
 
+      <HowToUseBanner
+        pageKey="ns-sofia"
+        steps={[
+          "Type a topic or tap a suggestion to start a memory recall conversation.",
+          "Sofia guides you through gentle reminiscence — past travels, family, daily routines.",
+          "Regular conversations help strengthen recall pathways over time.",
+        ]}
+      />
+
       <div className="glass-card flex-1 flex flex-col min-h-0 overflow-hidden">
         <div ref={listRef} className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((msg, i) => (
@@ -180,7 +190,7 @@ export function SofiaPage() {
               <div
                 className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                   msg.role === "user"
-                    ? "bg-[var(--gradient-accent)] text-white ml-auto"
+                    ? "bg-[var(--color-accent)] text-white ml-auto"
                     : "bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)]"
                 }`}
               >
@@ -212,7 +222,7 @@ export function SofiaPage() {
                 type="button"
                 onClick={() => send(prompt)}
                 disabled={isTyping}
-                className="text-left text-sm px-4 py-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all disabled:opacity-50 font-medium"
+                className="text-left text-sm px-4 py-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-colors disabled:opacity-50 font-medium"
               >
                 {prompt}
               </button>
@@ -233,7 +243,7 @@ export function SofiaPage() {
             <button
               type="submit"
               disabled={!input.trim() || isTyping}
-              className="shrink-0 w-12 h-[44px] rounded-xl bg-[var(--gradient-accent)] text-white flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none transition-opacity"
+              className="shrink-0 w-12 h-[44px] rounded-xl bg-[var(--color-accent)] text-white flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none transition-opacity"
               aria-label="Send"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

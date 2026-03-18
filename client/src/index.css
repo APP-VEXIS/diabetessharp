@@ -49,15 +49,10 @@
   --color-accent: var(--color-blue-main);
   --color-accent-hover: #1d4ed8;
   --color-accent-soft: rgba(45, 127, 249, 0.22);
-  --color-accent-glow: rgba(45, 127, 249, 0.38);
   --color-accent-text: #0b1120;
 
   /* Premium CTA: blue → green */
   --gradient-accent: linear-gradient(135deg, #2d7ff9 0%, #22c55e 50%, #14b8a6 100%);
-  --gradient-accent-subtle: linear-gradient(135deg, rgba(45, 127, 249, 0.16) 0%, rgba(34, 197, 94, 0.08) 100%);
-  --gradient-mesh-1: radial-gradient(ellipse 100% 70% at 10% 0%, rgba(45, 127, 249, 0.22), transparent 55%);
-  --gradient-mesh-2: radial-gradient(ellipse 80% 60% at 100% 40%, rgba(34, 197, 94, 0.18), transparent 55%);
-  --gradient-mesh-3: radial-gradient(ellipse 60% 40% at 0% 100%, rgba(37, 99, 235, 0.14), transparent 55%);
 
   /* Semantic */
   --color-success: #22c55e;
@@ -120,7 +115,6 @@
   --shadow-elevation-mid: 0 4px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
   --shadow-elevation-high: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
   --shadow-focus: 0 0 0 3px var(--color-accent-soft);
-  --shadow-glow: 0 0 48px var(--color-accent-glow);
   /* Legacy */
   --shadow-sm: var(--shadow-elevation-low);
   --shadow: var(--shadow-elevation-mid);
@@ -162,9 +156,6 @@
   --shadow-elevation-low: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.04);
   --shadow-elevation-mid: 0 4px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
   --shadow-elevation-high: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
-  --gradient-mesh-1: radial-gradient(ellipse 100% 70% at 30% 0%, rgba(234, 179, 8, 0.06), transparent 55%);
-  --gradient-mesh-2: radial-gradient(ellipse 80% 50% at 100% 60%, rgba(245, 158, 11, 0.04), transparent 50%);
-  --gradient-mesh-3: radial-gradient(ellipse 60% 40% at 0% 100%, rgba(251, 191, 36, 0.03), transparent 50%);
 }
 
 *,
@@ -296,12 +287,35 @@ h1, h2, h3, .font-display {
 .animate-in {
   animation: fade-in 0.3s var(--ease-out) backwards;
 }
+
+/* Hide scrollbar while keeping scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
 .stagger-1 { animation-delay: 0.05s; }
 .stagger-2 { animation-delay: 0.1s; }
 .stagger-3 { animation-delay: 0.15s; }
 .stagger-4 { animation-delay: 0.2s; }
 .stagger-5 { animation-delay: 0.25s; }
 .stagger-6 { animation-delay: 0.3s; }
+
+/* Staggered entrance for grid sections — children fade-in-up sequentially */
+.stagger-grid > * {
+  animation: fade-in-up 0.35s var(--ease-spring) backwards;
+}
+.stagger-grid > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-grid > *:nth-child(2) { animation-delay: 55ms; }
+.stagger-grid > *:nth-child(3) { animation-delay: 110ms; }
+.stagger-grid > *:nth-child(4) { animation-delay: 165ms; }
+.stagger-grid > *:nth-child(5) { animation-delay: 220ms; }
+.stagger-grid > *:nth-child(6) { animation-delay: 275ms; }
+@media (prefers-reduced-motion: reduce) {
+  .stagger-grid > * { animation: none; opacity: 1; transform: none; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .animate-in-up,
@@ -320,6 +334,10 @@ h1, h2, h3, .font-display {
   border-color: var(--color-border-default);
   box-shadow: var(--shadow-elevation-mid);
   transform: translateY(-1px);
+}
+.glass-card:active {
+  transform: scale(0.99);
+  opacity: 0.95;
 }
 /* Explicit transition utility — avoid transition-all for GPU-friendly motion */
 .transition-base {
@@ -360,7 +378,8 @@ h1, h2, h3, .font-display {
   box-shadow: var(--shadow-focus);
 }
 .btn:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: scale(0.97);
+  opacity: 0.85;
 }
 .btn:disabled {
   opacity: 0.6;
@@ -368,13 +387,15 @@ h1, h2, h3, .font-display {
 }
 
 .btn-primary {
-  background: var(--gradient-accent);
-  color: var(--color-accent-text);
-  box-shadow: 0 4px 16px var(--color-accent-glow);
+  background: var(--color-accent);
+  color: white;
+  box-shadow: none;
 }
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--color-accent-glow);
+  background: var(--color-accent-hover);
+  transform: none;
+  box-shadow: none;
+  opacity: 0.92;
 }
 
 .btn-secondary {
@@ -417,11 +438,18 @@ h1, h2, h3, .font-display {
   box-shadow: var(--shadow-elevation-mid);
   transform: translateY(-1px);
 }
+.stat-card:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
 .stat-card .label {
   font-size: var(--text-xs);
   color: var(--color-text-tertiary);
   margin-bottom: var(--space-2);
   font-weight: 500;
+  letter-spacing: var(--tracking-wider);
+  line-height: var(--leading-normal);
+  text-transform: uppercase;
 }
 .stat-card .value {
   font-size: clamp(var(--text-lg), 4vw, var(--text-xl));
@@ -444,7 +472,7 @@ h1, h2, h3, .font-display {
   font-size: var(--text-base);
   transition: border-color var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
 }
-.input-field:focus {
+.input-field:focus-visible {
   outline: none;
   border-color: var(--color-accent);
   box-shadow: var(--shadow-focus);
@@ -460,28 +488,11 @@ h1, h2, h3, .font-display {
   margin-bottom: var(--space-2);
 }
 
-/* ─── Nav active pill (accent, no border) ─────────────────────────────────── */
+/* ─── Nav active pill (accent, solid) ─────────────────────────────────────── */
 .nav-active {
-  background: var(--gradient-accent) !important;
+  background: var(--color-accent) !important;
   color: var(--color-accent-text) !important;
   border-color: transparent !important;
-}
-
-/* Sidebar nav item — active glow */
-.sidebar-nav-active.nav-active {
-  box-shadow: 0 0 20px var(--color-accent-glow);
-}
-
-/* Floating CTA — subtle glow pulse */
-@keyframes float-cta-glow {
-  0%, 100% { box-shadow: 0 8px 32px var(--color-accent-glow); }
-  50% { box-shadow: 0 10px 40px var(--color-accent-glow); }
-}
-.float-cta-glow {
-  animation: float-cta-glow 3s ease-in-out infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .float-cta-glow { animation: none; }
 }
 
 .pill-beginner { background: var(--difficulty-beginner); color: white; }

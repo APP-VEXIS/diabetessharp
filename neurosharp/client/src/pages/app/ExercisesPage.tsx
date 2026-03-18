@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 import { trpc } from "../../trpc";
 import { MEMORY_EXERCISES, type MemoryExercise, type Difficulty } from "../../data/memoryExercises";
 
@@ -21,7 +22,7 @@ function ExerciseCard({
   exercise,
   onComplete,
   isCompleted,
-  isDemo,
+  isDemo: _isDemo,
 }: {
   exercise: MemoryExercise;
   onComplete: () => void;
@@ -34,7 +35,7 @@ function ExerciseCard({
     <div className="glass-card overflow-hidden">
       {/* Header row - like Vigronex */}
       <div className="flex items-center gap-4 p-4 flex-wrap">
-        <div className="w-12 h-12 rounded-full border-2 border-[var(--color-accent)] flex items-center justify-center text-xl shrink-0 bg-[var(--color-surface)]">
+        <div className="w-12 h-12 rounded-full border-2 border-[var(--color-accent)] flex items-center justify-center text-xl shrink-0 bg-[var(--color-surface)]" aria-hidden>
           🧠
         </div>
         <div className="flex-1 min-w-0">
@@ -143,6 +144,15 @@ export function ExercisesPage() {
         <p className="text-sm text-[var(--color-text-muted)] mt-0.5">Daily training for peak memory performance.</p>
       </div>
 
+      <HowToUseBanner
+        pageKey="ns-exercises"
+        steps={[
+          "Filter exercises by difficulty or type using the category pills.",
+          "Tap any exercise to start — complete it and mark it as done to earn XP.",
+          "Aim to finish all exercises before midnight to maintain your daily streak.",
+        ]}
+      />
+
       {/* Weekly update notice — prominent at top */}
       <div className="mb-6 rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)]/20 px-4 py-3 flex flex-wrap items-start gap-3">
         <span className="text-2xl shrink-0" aria-hidden>🔄</span>
@@ -154,12 +164,6 @@ export function ExercisesPage() {
         </div>
       </div>
 
-      {isDemo && (
-        <div className="mb-4 px-4 py-2 rounded-lg bg-[var(--color-warning-soft)] border border-[var(--color-warning)]/30 text-[var(--color-text)] text-sm">
-          Demo mode — completions are stored only in this session.
-        </div>
-      )}
-
       {/* Filter pills */}
       <div className="flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1 scrollbar-hide">
         {FILTERS.map((f) => (
@@ -167,13 +171,13 @@ export function ExercisesPage() {
             key={f.id}
             type="button"
             onClick={() => setFilter(f.id)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors shrink-0 ${
               filter === f.id
                 ? "nav-active text-[var(--color-accent-text)]"
                 : "bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
             }`}
           >
-            <span>{f.icon}</span>
+            <span aria-hidden>{f.icon}</span>
             {f.label}
           </button>
         ))}

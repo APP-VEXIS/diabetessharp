@@ -1,4 +1,5 @@
 import { getSimpleInsights } from "../../data/insights";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 export function InsightsPage() {
   const insights = getSimpleInsights();
@@ -12,6 +13,15 @@ export function InsightsPage() {
           your care team.
         </p>
       </div>
+
+      <HowToUseBanner
+        pageKey="insights"
+        steps={[
+          "Insights are generated automatically from your blood sugar and meal log data.",
+          "Tap 'Ask Dr. Marcus' on any insight to explore it with AI guidance.",
+          "New insights appear as you log more readings — aim for 7+ entries per week.",
+        ]}
+      />
 
       <div className="space-y-3">
         {insights.map((insight) => (

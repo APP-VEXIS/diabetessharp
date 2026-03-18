@@ -1,20 +1,33 @@
 import { useState } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 import { trpc } from "../../trpc";
 import { DIABETES_EDUCATION, type DiabetesTopic } from "../../data/diabetesEducation";
+import {
+  BookOpen,
+  Salad,
+  Droplets,
+  Pill,
+  Leaf,
+  LayoutGrid,
+  RefreshCw,
+  Play,
+  ChevronUp,
+  ChevronDown,
+  CheckCircle2,
+} from "lucide-react";
 
 const FILTERS = [
-  { id: "all", label: "All", icon: "📚" },
-  { id: "nutrition", label: "Nutrition", icon: "🥗" },
-  { id: "monitoring", label: "Monitoring", icon: "🩸" },
-  { id: "treatment", label: "Treatment", icon: "💊" },
-  { id: "lifestyle", label: "Lifestyle", icon: "🌿" },
+  { id: "all", label: "All", Icon: LayoutGrid },
+  { id: "nutrition", label: "Nutrition", Icon: Salad },
+  { id: "monitoring", label: "Monitoring", Icon: Droplets },
+  { id: "treatment", label: "Treatment", Icon: Pill },
+  { id: "lifestyle", label: "Lifestyle", Icon: Leaf },
 ];
 
 function TopicCard({
   topic,
   onComplete,
   isCompleted,
-  isDemo,
 }: {
   topic: DiabetesTopic;
   onComplete: () => void;
@@ -26,8 +39,8 @@ function TopicCard({
   return (
     <div className="glass-card overflow-hidden">
       <div className="flex items-center gap-4 p-4 flex-wrap">
-        <div className="w-12 h-12 rounded-full border-2 border-[var(--color-accent)] flex items-center justify-center text-xl shrink-0 bg-[var(--color-surface)]">
-          📖
+        <div className="w-12 h-12 rounded-full border-2 border-[var(--color-accent)] flex items-center justify-center shrink-0 bg-[var(--color-accent-soft)]">
+          <BookOpen size={20} className="text-[var(--color-accent)]" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -45,18 +58,20 @@ function TopicCard({
         </div>
         <div className="flex items-center gap-1 shrink-0">
           {isCompleted ? (
-            <span className="text-xs font-medium text-[var(--color-success)]">✓ Done</span>
+            <span className="flex items-center gap-1 text-xs font-medium text-[var(--color-success)]">
+              <CheckCircle2 size={14} /> Done
+            </span>
           ) : (
             <button
               type="button"
               className="btn btn-primary py-2 px-4 rounded-lg text-sm font-medium min-h-0 flex items-center gap-1.5"
               onClick={() => { onComplete(); setExpanded(false); }}
             >
-              ▶ Read
+              <Play size={13} /> Read
             </button>
           )}
           <button type="button" onClick={() => setExpanded(!expanded)} className="p-1.5 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-            {expanded ? "▲" : "▼"}
+            {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
         </div>
       </div>
@@ -113,8 +128,17 @@ export function ExercisesPage() {
         <p className="text-sm text-[var(--color-text-muted)] mt-0.5">Short lessons and tips to help you manage diabetes day to day.</p>
       </div>
 
+      <HowToUseBanner
+        pageKey="education"
+        steps={[
+          "Filter lessons by category using the pills — Diet, Monitoring, Lifestyle and more.",
+          "Tap any lesson to expand it and mark it as done when finished.",
+          "Completing all lessons in a category earns you XP towards your progress.",
+        ]}
+      />
+
       <div className="mb-6 rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)]/20 px-4 py-3 flex flex-wrap items-start gap-3">
-        <span className="text-2xl shrink-0" aria-hidden>🔄</span>
+        <RefreshCw size={22} className="text-[var(--color-accent)] shrink-0 mt-0.5" aria-hidden />
         <div>
           <p className="font-semibold text-[var(--color-text)] text-sm">New topics every week</p>
           <p className="text-sm text-[var(--color-text-muted)] mt-0.5 leading-relaxed">
@@ -123,25 +147,19 @@ export function ExercisesPage() {
         </div>
       </div>
 
-      {isDemo && (
-        <div className="mb-4 px-4 py-2 rounded-lg bg-[var(--color-warning-soft)] border border-[var(--color-warning)]/30 text-[var(--color-text)] text-sm">
-          Demo mode — completions are stored only in this session.
-        </div>
-      )}
-
       <div className="flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1 scrollbar-hide">
         {FILTERS.map((f) => (
           <button
             key={f.id}
             type="button"
             onClick={() => setFilter(f.id)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors shrink-0 ${
               filter === f.id
                 ? "nav-active text-[var(--color-accent-text)]"
                 : "bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
             }`}
           >
-            <span>{f.icon}</span>
+            <f.Icon size={14} />
             {f.label}
           </button>
         ))}

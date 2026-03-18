@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 import { useLocation } from "react-router-dom";
+import { MessageCircle, Send } from "lucide-react";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -114,6 +116,15 @@ export function DrMarcusPage() {
         </p>
       </div>
 
+      <HowToUseBanner
+        pageKey="dr-marcus"
+        steps={[
+          "Type your question or select a suggested topic to start the conversation.",
+          "Dr. Marcus uses your logged data to give personalized guidance.",
+          "Always confirm any medical decision with your own doctor.",
+        ]}
+      />
+
       <div className="glass-card flex-1 flex flex-col min-h-0 overflow-hidden">
         {/* Chat messages */}
         <div
@@ -135,7 +146,7 @@ export function DrMarcusPage() {
               <div
                 className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                   msg.role === "user"
-                    ? "bg-[var(--gradient-accent)] text-[var(--color-accent-text)] ml-auto"
+                    ? "bg-[var(--color-accent)] text-[var(--color-accent-text)] ml-auto"
                     : "bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)]"
                 }`}
               >
@@ -162,7 +173,7 @@ export function DrMarcusPage() {
         {/* Quick prompts — prominent box */}
         <div className="mx-4 mb-3 p-4 rounded-2xl border-2 border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)]/50">
           <p className="text-sm font-semibold text-[var(--color-text)] mb-3 flex items-center gap-2">
-            <span className="text-[var(--color-accent)]">💬</span>
+            <MessageCircle size={16} className="text-[var(--color-accent)] shrink-0" aria-hidden />
             {messages.length <= 1 ? "Start the conversation" : "More questions"}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -172,7 +183,7 @@ export function DrMarcusPage() {
                 type="button"
                 onClick={() => send(prompt)}
                 disabled={isTyping}
-                className="text-left text-sm px-4 py-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] hover:shadow-sm transition-all disabled:opacity-50 font-medium"
+                className="text-left text-sm px-4 py-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] hover:shadow-sm transition-colors disabled:opacity-50 font-medium"
               >
                 {prompt}
               </button>
@@ -201,12 +212,10 @@ export function DrMarcusPage() {
             <button
               type="submit"
               disabled={!input.trim() || isTyping}
-              className="shrink-0 w-12 h-[44px] rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none transition-opacity"
+              className="shrink-0 w-12 h-[44px] rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none transition-opacity"
               aria-label="Send"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
+              <Send size={18} aria-hidden />
             </button>
           </div>
         </form>

@@ -1,4 +1,5 @@
 import { trpc } from "../../trpc";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 const DEMO = { programDay: 2, scoreImprovement: 0, currentStreak: 1, badgesEarned: 0, totalXP: 65, levelXP: 500 };
 const DEMO_SCORES = [
@@ -29,49 +30,60 @@ export function ProgressPage() {
         <p className="text-sm text-[var(--color-text-muted)] mt-0.5">Track your journey</p>
       </div>
 
-      {isError && (
-        <div className="mb-4 px-4 py-2 rounded-lg bg-[var(--color-warning-soft)] border border-[var(--color-warning)]/30 text-[var(--color-text)] text-sm">
-          Demo mode — showing sample data.
-        </div>
-      )}
+      <HowToUseBanner
+        pageKey="ns-progress"
+        steps={[
+          "Check your program day, streak, XP and cognitive score improvement in the metric cards.",
+          "Scroll down to see your score history chart over the last 30 days.",
+          "Unlock achievement badges by completing exercises and reaching cognitive milestones.",
+        ]}
+      />
 
       {isLoading && !isError ? (
-        <div className="flex items-center gap-3 text-[var(--color-text-muted)] py-10">
-          <div className="w-7 h-7 rounded-full border-2 border-[var(--color-accent)] border-t-transparent animate-spin" />
-          <span>Loading...</span>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6" aria-hidden>
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="stat-card">
+              <div className="skeleton h-3 w-16 rounded mb-2" />
+              <div className="skeleton h-7 w-10 rounded" />
+            </div>
+          ))}
         </div>
       ) : (
         <>
           {/* 4 metric cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-            <div className="glass-card p-4">
-              <div className="font-display font-bold text-xl text-[var(--color-text)]">{programDay}</div>
-              <div className="text-xs text-[var(--color-text-muted)] mt-0.5">Program Day</div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6 stagger-grid">
+            <div className="stat-card">
+              <div className="label">Program Day</div>
+              <div className="value">{programDay}</div>
+              <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1">of 90 · Week {Math.ceil(programDay / 7)}</div>
             </div>
-            <div className="glass-card p-4">
-              <div className="font-display font-bold text-xl text-[var(--color-text)]">{DEMO.scoreImprovement}</div>
-              <div className="text-xs text-[var(--color-text-muted)] mt-0.5">Score Improvement</div>
+            <div className="stat-card">
+              <div className="label">Score improvement</div>
+              <div className="value">{DEMO.scoreImprovement > 0 ? `+${DEMO.scoreImprovement}` : DEMO.scoreImprovement}</div>
+              <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1">vs program start</div>
             </div>
-            <div className="glass-card p-4">
-              <div className="font-display font-bold text-xl text-[var(--color-text)]">{streak}</div>
-              <div className="text-xs text-[var(--color-text-muted)] mt-0.5">Current Streak</div>
+            <div className="stat-card">
+              <div className="label">Streak</div>
+              <div className="value">{streak}</div>
+              <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1">Days in a row</div>
             </div>
-            <div className="glass-card p-4">
-              <div className="font-display font-bold text-xl text-[var(--color-text)]">{DEMO.badgesEarned}</div>
-              <div className="text-xs text-[var(--color-text-muted)] mt-0.5">Badges Earned</div>
+            <div className="stat-card">
+              <div className="label">Badges earned</div>
+              <div className="value">{DEMO.badgesEarned}</div>
+              <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1">Total unlocked</div>
             </div>
           </div>
 
           {/* Level / XP bar */}
           <div className="glass-card p-4 mb-6">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[var(--color-accent)]">⚡</span>
+              
               <span className="font-semibold text-[var(--color-text)]">Level 1</span>
               <span className="text-[var(--color-text-muted)] text-sm">65 total XP</span>
             </div>
             <div className="h-2 bg-[var(--color-surface)] rounded-full overflow-hidden">
               <div
-                className="h-full rounded-full bg-[var(--gradient-accent)] transition-all"
+                className="h-full rounded-full bg-[var(--color-accent)] transition-[width] duration-500 ease-out"
                 style={{ width: `${(totalXP / DEMO.levelXP) * 100}%` }}
               />
             </div>
@@ -82,13 +94,13 @@ export function ProgressPage() {
           <div className="grid lg:grid-cols-2 gap-6 mb-6">
             <div className="glass-card p-5">
               <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-4">
-                <span>📈</span> Performance Score Over Time
+                Performance Score Over Time
               </h3>
               <div className="h-48 flex items-end justify-around gap-1 px-2">
                 {displayScores.map((p: { day: number; score: number }) => (
                   <div key={p.day} className="flex-1 flex flex-col items-center gap-1">
                     <div
-                      className="w-full rounded-t bg-[var(--gradient-accent)] min-h-[4px] transition-all"
+                      className="w-full rounded-t bg-[var(--color-accent)] min-h-[4px] transition-[height] duration-300 ease-out"
                       style={{ height: `${p.score}%` }}
                     />
                     <span className="text-[10px] text-[var(--color-text-muted)]">Day {p.day}</span>
@@ -106,7 +118,7 @@ export function ProgressPage() {
 
             <div className="glass-card p-5">
               <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-4">
-                <span>📊</span> Latest Performance Breakdown
+                Latest Performance Breakdown
               </h3>
               <div className="h-48 flex items-center justify-center">
                 <svg viewBox="0 0 120 120" className="w-full h-full max-w-[200px] mx-auto">
@@ -158,12 +170,12 @@ export function ProgressPage() {
           {/* Achievements */}
           <div>
             <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-4">
-              <span>🏆</span> Achievements
+              Achievements
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {ACHIEVEMENTS.map((a) => (
                 <div key={a.id} className="glass-card p-4">
-                  <div className="text-2xl mb-2">{a.icon}</div>
+                  <span className="text-xl mb-2 block leading-none" aria-hidden="true">{a.icon}</span>
                   <div className="font-semibold text-[var(--color-text)] text-sm">{a.title}</div>
                   <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{a.desc}</p>
                 </div>

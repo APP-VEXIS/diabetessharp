@@ -1,5 +1,18 @@
 import { useState, useEffect } from "react";
+import {
+  Pill,
+  Target,
+  Zap,
+  Shield,
+  User,
+  Smartphone,
+  Bell,
+  Palette,
+  Moon,
+  Sun,
+} from "lucide-react";
 import { getGoals, saveGoals, type GlucoseGoals } from "../../data/goals";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 export function SettingsPage() {
   const [medication, setMedication] = useState("");
@@ -24,11 +37,20 @@ export function SettingsPage() {
         <p className="text-sm text-[var(--color-text-muted)] mt-0.5">Manage your account and preferences.</p>
       </div>
 
+      <HowToUseBanner
+        pageKey="settings"
+        steps={[
+          "Set your blood sugar target range to personalise your Time in Range stats.",
+          "Add your medications to help Dr. Marcus give more accurate guidance.",
+          "Choose your app theme and notification preferences — changes apply instantly.",
+        ]}
+      />
+
       <div className="space-y-6">
         {/* Medications */}
         <div className="glass-card p-5">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">📎</span> Medications
+            <Pill size={16} className="text-[var(--color-accent)] shrink-0" /> Medications
           </h3>
           <p className="text-xs text-[var(--color-text-muted)] mb-3">
             Track medications you're taking. This helps Dr. James provide more relevant guidance.
@@ -51,7 +73,7 @@ export function SettingsPage() {
         {/* Blood sugar targets — for time-in-range % */}
         <div className="glass-card p-5">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">🎯</span> Blood sugar targets (mg/dL)
+            <Target size={16} className="text-[var(--color-accent)] shrink-0" /> Blood sugar targets (mg/dL)
           </h3>
           <p className="text-xs text-[var(--color-text-muted)] mb-3">
             Used for &quot;time in range&quot; on the glucose log. Fasting: between min and max; after meals: below post-meal max.
@@ -96,7 +118,7 @@ export function SettingsPage() {
         {/* Supplements */}
         <div className="glass-card p-5">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">⚡</span> Supplements
+            <Zap size={16} className="text-[var(--color-accent)] shrink-0" /> Supplements
           </h3>
           <p className="text-xs text-[var(--color-text-muted)] mb-3">
             Track supplements you're taking to optimize your program.
@@ -119,11 +141,11 @@ export function SettingsPage() {
         {/* Subscription */}
         <div className="glass-card p-5">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">🛡️</span> Subscription
+            <Shield size={16} className="text-[var(--color-accent)] shrink-0" /> Subscription
           </h3>
           <p className="text-sm text-[var(--color-text)] font-medium mt-2">Free Plan</p>
           <p className="text-xs text-[var(--color-text-muted)] mb-4">Upgrade to unlock all features</p>
-          <button type="button" className="w-full py-3 rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-semibold hover:opacity-95 transition-opacity">
+          <button type="button" className="w-full py-3 rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] font-semibold hover:opacity-95 transition-opacity">
             Upgrade to Premium
           </button>
         </div>
@@ -131,7 +153,7 @@ export function SettingsPage() {
         {/* Stats Summary */}
         <div className="glass-card p-5">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-4">
-            <span className="text-[var(--color-accent)]">👤</span> Stats Summary
+            <User size={16} className="text-[var(--color-accent)] shrink-0" /> Stats Summary
           </h3>
           <div className="grid grid-cols-3 gap-4">
             <div>
@@ -152,7 +174,7 @@ export function SettingsPage() {
         {/* Install app on phone */}
         <div className="glass-card p-5">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">📱</span> Add to Home Screen
+            <Smartphone size={16} className="text-[var(--color-accent)] shrink-0" /> Add to Home Screen
           </h3>
           <p className="text-xs text-[var(--color-text-muted)]">
             On your phone, tap the <strong>&quot;Add to phone&quot;</strong> button in the bar above the bottom navigation to install NeuroSharp as an app icon for quick access.
@@ -162,7 +184,7 @@ export function SettingsPage() {
         {/* Notifications */}
         <div className="glass-card p-5">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">🔔</span> Notifications
+            <Bell size={16} className="text-[var(--color-accent)] shrink-0" /> Notifications
           </h3>
           <div className="flex items-center justify-between mt-3">
             <div>
@@ -175,7 +197,7 @@ export function SettingsPage() {
               className={`px-4 py-2 rounded-xl font-semibold text-sm transition-colors min-h-[44px] ${
                 pushEnabled
                   ? "bg-[var(--color-surface)] text-[var(--color-text-muted)]"
-                  : "bg-[var(--gradient-accent)] text-[var(--color-accent-text)]"
+                  : "bg-[var(--color-accent)] text-[var(--color-accent-text)]"
               }`}
             >
               {pushEnabled ? "Disable" : "Enable"}
@@ -186,7 +208,7 @@ export function SettingsPage() {
         {/* Appearance */}
         <div className="glass-card p-5">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">🎨</span> Appearance
+            <Palette size={16} className="text-[var(--color-accent)] shrink-0" /> Appearance
           </h3>
           <div className="flex items-center justify-between mt-3 mb-4">
             <div>
@@ -203,11 +225,14 @@ export function SettingsPage() {
               }`}
             >
               <span
-                className={`absolute top-1 w-6 h-6 rounded-full bg-white shadow transition-transform flex items-center justify-center text-sm ${
+                className={`absolute top-1 w-6 h-6 rounded-full bg-white shadow transition-transform flex items-center justify-center ${
                   darkMode ? "left-7" : "left-1"
                 }`}
               >
-                {darkMode ? "🌙" : "☀️"}
+                {darkMode
+                  ? <Moon size={14} className="text-[var(--color-accent)]" />
+                  : <Sun size={14} className="text-amber-500" />
+                }
               </span>
             </button>
           </div>
@@ -221,7 +246,7 @@ export function SettingsPage() {
                   : "border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-border-strong)]"
               }`}
             >
-              <span className="text-[var(--color-accent)] text-lg">☀️</span>
+              <Sun size={18} className="text-amber-500" />
               <p className="text-sm font-medium text-[var(--color-text)] mt-1">Light</p>
               <div className="flex gap-0.5 mt-2 h-1.5 rounded overflow-hidden">
                 <div className="w-1/3 bg-white rounded" />
@@ -238,7 +263,7 @@ export function SettingsPage() {
                   : "border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-border-strong)]"
               }`}
             >
-              <span className="text-[var(--color-info)] text-lg">🌙</span>
+              <Moon size={18} className="text-[var(--color-info)]" />
               <p className="text-sm font-medium text-[var(--color-text)] mt-1">Dark</p>
               <div className="flex gap-0.5 mt-2 h-1.5 rounded overflow-hidden">
                 <div className="w-1/3 bg-[var(--color-surface)] rounded" />

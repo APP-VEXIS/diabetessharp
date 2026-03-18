@@ -105,7 +105,11 @@ function BottomNavItem({ path, label, Icon }: { path: string; label: string; Ico
       {({ isActive }) => (
         <>
           {isActive && (
-            <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-[var(--gradient-accent)] transition-opacity duration-200" aria-hidden />
+            <span
+              className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full transition-opacity duration-200"
+              style={{ background: "var(--color-accent)" }}
+              aria-hidden
+            />
           )}
           <span className="flex items-center justify-center [&_svg]:w-6 [&_svg]:h-6 [&_svg]:text-current" aria-hidden>
             <Icon />
@@ -163,7 +167,7 @@ export function AppLayout() {
         <aside className="hidden lg:flex w-[260px] shrink-0 flex-col min-h-0 border-r border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)]/80 backdrop-blur-[20px] backdrop-saturate-[180%]">
         <div className="p-6 border-b border-[var(--color-border-subtle)] shrink-0">
           <Link to="/app/dashboard" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center overflow-hidden shadow-lg group-hover:shadow-[var(--shadow-glow)] transition-all duration-300">
+            <div className="w-11 h-11 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center overflow-hidden shadow-[var(--shadow-elevation-low)] transition-transform duration-200 group-hover:scale-[1.02]">
               <img src="/neurosharp-logo.png" alt="NeuroSharp" className="w-8 h-8 object-contain" />
             </div>
             <div className="min-w-0">
@@ -292,7 +296,7 @@ export function AppLayout() {
                 type="button"
                 onClick={() => setTheme("dark")}
                 aria-label="Dark theme"
-                className={`text-xs px-2.5 py-2 min-h-[40px] rounded-lg border transition-all touch-manipulation ${
+                className={`text-xs px-2.5 py-2 min-h-[40px] rounded-lg border transition-colors touch-manipulation ${
                   theme === "dark"
                     ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-[var(--color-accent-text)] font-medium"
                     : "bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)]"
@@ -304,7 +308,7 @@ export function AppLayout() {
                 type="button"
                 onClick={() => setTheme("light")}
                 aria-label="Light theme"
-                className={`text-xs px-2.5 py-2 min-h-[40px] rounded-lg border transition-all touch-manipulation ${
+                className={`text-xs px-2.5 py-2 min-h-[40px] rounded-lg border transition-colors touch-manipulation ${
                   theme === "light"
                     ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-[var(--color-accent-text)] font-medium"
                     : "bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)]"
@@ -319,7 +323,7 @@ export function AppLayout() {
                 type="button"
                 onClick={() => setFontSize("normal")}
                 aria-label="Normal text size"
-                className={`text-xs px-2.5 py-2 min-h-[40px] rounded-lg border transition-all touch-manipulation ${
+                className={`text-xs px-2.5 py-2 min-h-[40px] rounded-lg border transition-colors touch-manipulation ${
                   fontSize === "normal"
                     ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-[var(--color-accent-text)] font-medium"
                     : "bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)]"
@@ -331,7 +335,7 @@ export function AppLayout() {
                 type="button"
                 onClick={() => setFontSize("large")}
                 aria-label="Larger text"
-                className={`text-sm px-2.5 py-2 min-h-[40px] rounded-lg border transition-all font-bold touch-manipulation ${
+                className={`text-sm px-2.5 py-2 min-h-[40px] rounded-lg border transition-colors font-bold touch-manipulation ${
                   fontSize === "large"
                     ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-[var(--color-accent-text)]"
                     : "bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)]"
@@ -353,7 +357,8 @@ export function AppLayout() {
                     setShowAddToPhoneHint((v) => !v);
                   }
                 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-semibold text-sm shadow-md min-h-[44px]"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-[var(--color-accent-text)] font-semibold text-sm min-h-[44px]"
+                style={{ background: "var(--color-accent)" }}
               >
                 <span aria-hidden>📱</span>
                 <span>{installPrompt ? "Add to phone" : "Add to Home Screen"}</span>

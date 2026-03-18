@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 const CATEGORIES = [
   { id: "all", label: "All" },
@@ -32,6 +33,15 @@ export function LearnPage() {
         <p className="text-sm text-[var(--color-text-muted)] mt-0.5">Evidence-based education on memory and brain health.</p>
       </div>
 
+      <HowToUseBanner
+        pageKey="ns-learn"
+        steps={[
+          "Filter articles by topic using the category pills — Causes, Lifestyle, Treatment and more.",
+          "Tap any article to read the full content.",
+          "Recommended content is updated weekly based on your training and cognitive score.",
+        ]}
+      />
+
       {/* Category filter pills */}
       <div className="flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1 scrollbar-hide">
         {CATEGORIES.map((c) => (
@@ -39,7 +49,7 @@ export function LearnPage() {
             key={c.id}
             type="button"
             onClick={() => setFilter(c.id)}
-            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-all ${
+            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-colors ${
               filter === c.id ? "nav-active text-[var(--color-accent-text)]" : "bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
             }`}
           >
@@ -68,7 +78,7 @@ export function LearnPage() {
             </div>
             <h3 className="font-semibold text-[var(--color-text)] text-sm mb-1">{a.title}</h3>
             <p className="text-xs text-[var(--color-text-muted)] line-clamp-2 mb-3">{a.desc}</p>
-            <span className="inline-block text-[10px] font-medium px-2 py-0.5 rounded bg-[#384950] text-white">
+            <span className="inline-block text-[10px] font-medium px-2 py-0.5 rounded bg-[var(--color-surface-overlay)] text-[var(--color-text-secondary)]">
               {a.category}
             </span>
           </div>

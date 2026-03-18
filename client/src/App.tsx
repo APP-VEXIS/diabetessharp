@@ -26,6 +26,7 @@ import { PhotosPage } from "./pages/app/PhotosPage";
 import { SofiaPage } from "./pages/app/SofiaPage";
 import { ProfilePage } from "./pages/app/ProfilePage";
 import { SettingsPage } from "./pages/app/SettingsPage";
+import { AllToolsPage } from "./pages/app/AllToolsPage";
 import { ReviewsPage } from "./pages/ReviewsPage";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { TermsOfUse } from "./pages/TermsOfUse";
@@ -78,6 +79,7 @@ export default function App() {
           <Route path="sofia" element={<SofiaPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="settings" element={<SettingsPage />} />
+          <Route path="tools" element={<AllToolsPage />} />
         </Route>
       </Route>
       <Route path="/reviews" element={<ReviewsPage />} />

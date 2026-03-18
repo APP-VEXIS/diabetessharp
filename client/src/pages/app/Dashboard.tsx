@@ -1,4 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
+import {
+  Share2,
+  Flame,
+  Eye,
+  PartyPopper,
+  ClipboardList,
+  BarChart3,
+  Footprints,
+  Candy,
+  CheckCircle2,
+  Moon,
+  Salad,
+  Droplets,
+  BedDouble,
+  Utensils,
+  Wind,
+  Trophy,
+  Star,
+  Target,
+  Medal,
+  Stethoscope,
+  MessageCircle,
+  Bell,
+  Camera,
+  AlertTriangle,
+  TrendingUp,
+  FileText,
+  BookOpen,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 import { trpc } from "../../trpc";
@@ -20,13 +49,168 @@ import { getDailyMissions, toggleMissionDone } from "../../data/dailyMissions";
 import { getSimpleInsights, getSmartAlerts } from "../../data/insights";
 import { getCurrentChallenge, toggleChallengeToday } from "../../data/challenges";
 import { getControlLevel } from "../../data/levels";
-import { evaluateAndStoreAchievements, getAchievements, ACHIEVEMENT_BADGES } from "../../data/achievements";
+import { evaluateAndStoreAchievements, getAchievements } from "../../data/achievements";
 import { getSmartNotification } from "../../data/smartNotifications";
 import { getDailyCoachTips } from "../../data/dailyCoach";
 import { getGlucosePredictions } from "../../data/glucosePrediction";
 import { getWeekComparison } from "../../data/weekComparison";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
+
+/** Maps legacy emoji icon strings (from data/*.ts) to lucide-react components. */
+const DATA_ICON_MAP: Record<string, React.ReactNode> = {
+  "🔥": <Flame size={16} aria-hidden />,
+  "👀": <Eye size={16} aria-hidden />,
+  "🎉": <PartyPopper size={16} aria-hidden />,
+  "📋": <ClipboardList size={16} aria-hidden />,
+  "📊": <BarChart3 size={16} aria-hidden />,
+  "🚶": <Footprints size={16} aria-hidden />,
+  "🍬": <Candy size={16} aria-hidden />,
+  "✅": <CheckCircle2 size={16} aria-hidden />,
+  "🌙": <Moon size={16} aria-hidden />,
+  "🥗": <Salad size={16} aria-hidden />,
+  "💧": <Droplets size={16} aria-hidden />,
+  "😴": <BedDouble size={16} aria-hidden />,
+  "🍽️": <Utensils size={16} aria-hidden />,
+  "🦶": <Footprints size={16} aria-hidden />,
+  "🧘": <Wind size={16} aria-hidden />,
+  "🏆": <Trophy size={16} aria-hidden />,
+  "⭐": <Star size={16} aria-hidden />,
+  "🎯": <Target size={16} aria-hidden />,
+  "🏅": <Medal size={16} aria-hidden />,
+};
+
+const BADGE_ICON_MAP: Record<string, React.ReactNode> = {
+  streak_7: <Flame size={24} className="text-orange-400" aria-hidden />,
+  streak_30: <Trophy size={24} className="text-amber-400" aria-hidden />,
+  tir_70: <BarChart3 size={24} className="text-[var(--color-accent)]" aria-hidden />,
+  tir_80: <Star size={24} className="text-amber-400" aria-hidden />,
+  first_log: <Target size={24} className="text-[var(--color-success)]" aria-hidden />,
+};
+
+function renderDataIcon(icon: string): React.ReactNode {
+  return DATA_ICON_MAP[icon] ?? <span aria-hidden>{icon}</span>;
+}
 
 const DEMO = { controlScore: 58, dailyStreak: 5, programDay: 2, checkInsDone: 0, bestStreak: 5 };
+
+const TOOLS = [
+  {
+    id: "glucose",
+    path: "/app/glucose",
+    badge: "popular" as const,
+    icon: <Droplets size={18} />,
+    iconColor: "#60a5fa",
+    iconBg: "rgba(59,130,246,0.15)",
+    title: "Blood Sugar",
+    desc: "Log and track your glucose readings",
+  },
+  {
+    id: "dr-marcus",
+    path: "/app/dr-marcus",
+    badge: "featured" as const,
+    icon: <Stethoscope size={18} />,
+    iconColor: "var(--color-accent)",
+    iconBg: "rgba(var(--color-accent-rgb,99,102,241),0.15)",
+    title: "Dr. Marcus",
+    desc: "AI doctor for personalized guidance",
+  },
+  {
+    id: "sofia",
+    path: "/app/sofia",
+    badge: "new" as const,
+    icon: <MessageCircle size={18} />,
+    iconColor: "#34d399",
+    iconBg: "rgba(52,211,153,0.15)",
+    title: "Ask Sofia",
+    desc: "Chat with your AI health coach",
+  },
+  {
+    id: "nutrition",
+    path: "/app/nutrition",
+    badge: "popular" as const,
+    icon: <Salad size={18} />,
+    iconColor: "#4ade80",
+    iconBg: "rgba(74,222,128,0.15)",
+    title: "Nutrition",
+    desc: "Meal planning and calorie tracking",
+  },
+  {
+    id: "reminders",
+    path: "/app/reminders",
+    badge: null,
+    icon: <Bell size={18} />,
+    iconColor: "#fbbf24",
+    iconBg: "rgba(251,191,36,0.15)",
+    title: "Reminders",
+    desc: "Meds, insulin and glucose alerts",
+  },
+  {
+    id: "photos",
+    path: "/app/photos",
+    badge: null,
+    icon: <Camera size={18} />,
+    iconColor: "#f472b6",
+    iconBg: "rgba(244,114,182,0.15)",
+    title: "Photo Diary",
+    desc: "Log meals with your camera",
+  },
+  {
+    id: "progress",
+    path: "/app/progress",
+    badge: null,
+    icon: <TrendingUp size={18} />,
+    iconColor: "#a78bfa",
+    iconBg: "rgba(167,139,250,0.15)",
+    title: "Progress",
+    desc: "Charts, XP and achievements",
+  },
+  {
+    id: "weekly-report",
+    path: "/app/weekly-report",
+    badge: null,
+    icon: <BarChart3 size={18} />,
+    iconColor: "#38bdf8",
+    iconBg: "rgba(56,189,248,0.15)",
+    title: "Weekly Report",
+    desc: "Your week in numbers",
+  },
+  {
+    id: "learn",
+    path: "/app/learn",
+    badge: "new" as const,
+    icon: <BookOpen size={18} />,
+    iconColor: "#fb923c",
+    iconBg: "rgba(251,146,60,0.15)",
+    title: "Learn",
+    desc: "Diabetes education & tips",
+  },
+  {
+    id: "doctor-prep",
+    path: "/app/doctor-prep",
+    badge: null,
+    icon: <FileText size={18} />,
+    iconColor: "#94a3b8",
+    iconBg: "rgba(148,163,184,0.15)",
+    title: "Doctor Report",
+    desc: "Prepare for your next visit",
+  },
+  {
+    id: "emergency",
+    path: "/app/emergency",
+    badge: null,
+    icon: <AlertTriangle size={18} />,
+    iconColor: "#f87171",
+    iconBg: "rgba(248,113,113,0.15)",
+    title: "Emergency",
+    desc: "Quick guide for low blood sugar",
+  },
+] as const;
+
+const BADGE_STYLES = {
+  featured: { bg: "rgba(var(--color-accent-rgb,99,102,241),0.18)", color: "var(--color-accent)", label: "Featured" },
+  popular:  { bg: "rgba(251,146,60,0.18)",  color: "#fb923c", label: "Popular"  },
+  new:      { bg: "rgba(52,211,153,0.18)",   color: "#34d399", label: "New"      },
+} as const;
 
 /** Skeleton screen: shimmer blocks only (Apple HIG); no spinner */
 function DashboardSkeleton() {
@@ -74,22 +258,6 @@ function DashboardSkeleton() {
   );
 }
 
-/** One big "number of the day" for the dashboard hero */
-function getNumberOfTheDay(
-  todayStr: string,
-  glucoseLogs: ReturnType<typeof getRecentLogs>,
-  timeInRange: number | null,
-  streak: number
-): { value: string; label: string } {
-  const todayLogs = glucoseLogs.filter((e) => e.date === todayStr);
-  const fasting = todayLogs.find((e) => e.context === "fasting");
-  if (fasting) return { value: `${fasting.value}`, label: "mg/dL (fasting today)" };
-  if (todayLogs.length > 0)
-    return { value: `${todayLogs[0].value}`, label: `mg/dL (${todayLogs[0].context.replace("_", " ")})` };
-  if (timeInRange !== null) return { value: `${timeInRange}%`, label: "time in range" };
-  if (streak > 0) return { value: `${streak}`, label: "day streak" };
-  return { value: "—", label: "Log glucose to see your number" };
-}
 
 /** Hero emotional headline — human first, number second */
 function getHeroEmotionalMessage(
@@ -137,10 +305,25 @@ export function Dashboard() {
   const glucoseLogs = getRecentLogs(90);
   const goals = getGoals();
   const timeInRange = getTimeInRangePercent(glucoseLogs, goals.fastingMin, goals.fastingMax, goals.postMealMax);
+
+  // TIR trend: current 7 days vs previous 7 days
+  const tirTrend = (() => {
+    const todayD = new Date();
+    const fmt = (d: Date) =>
+      d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    const d7 = new Date(todayD); d7.setDate(d7.getDate() - 7);
+    const d14 = new Date(todayD); d14.setDate(d14.getDate() - 14);
+    const s7 = fmt(d7);
+    const s14 = fmt(d14);
+    const logs7 = glucoseLogs.filter((e) => e.date >= s7);
+    const logsPrev7 = glucoseLogs.filter((e) => e.date >= s14 && e.date < s7);
+    const t7 = getTimeInRangePercent(logs7, goals.fastingMin, goals.fastingMax, goals.postMealMax);
+    const tp7 = getTimeInRangePercent(logsPrev7, goals.fastingMin, goals.fastingMax, goals.postMealMax);
+    return t7 !== null && tp7 !== null ? t7 - tp7 : null;
+  })();
   const navigate = useNavigate();
   const todayStr = getTodayString();
   const controlLevel = getControlLevel();
-  const numberOfTheDay = getNumberOfTheDay(todayStr, glucoseLogs, timeInRange, streak);
   const heroMessage = getHeroEmotionalMessage(controlLevel.id, streak, timeInRange);
   const scoreState = getScoreEmotionalState(score);
   const tipOfTheDay = getTipOfTheDay();
@@ -152,6 +335,13 @@ export function Dashboard() {
   const predictions = getGlucosePredictions();
   const smartAlerts = getSmartAlerts();
   const weekComparison = getWeekComparison();
+  const { data: meData } = trpc.auth.me.useQuery(undefined, { retry: false });
+  const displayName =
+    meData?.user?.email != null
+      ? ((meData.user as { name?: string }).name ?? meData.user.email.split("@")[0] ?? null)
+      : isDemo
+        ? "Guest"
+        : null;
 
   const navTo = (path: string) => () => navigate(path);
 
@@ -250,15 +440,67 @@ export function Dashboard() {
 
   return (
     <div className="space-y-8 sm:space-y-10" role="main" aria-label="Dashboard">
-      {isDemo && (
-        <div
-          className="rounded-xl bg-[var(--color-warning-soft)] border border-[var(--color-warning)]/30 text-[var(--color-text-primary)] text-sm px-4 py-3"
-          role="status"
-          aria-live="polite"
-        >
-          Demo mode — showing sample data.
+      <HowToUseBanner
+        pageKey="dashboard"
+        steps={[
+          "Scroll through 'Your Tools' above to jump directly to any feature.",
+          "The overview cards (glucose, streak, nutrition) show your real-time data.",
+          "Tap any card to log new data or explore that section in depth.",
+        ]}
+      />
+
+      {/* Your Tools — hero do dashboard, sempre visível independente de loading */}
+      <section aria-label="Quick access tools">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">Your Tools</h2>
+          <Link
+            to="/app/tools"
+            className="text-xs font-medium text-[var(--color-accent)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] rounded"
+          >
+            See all →
+          </Link>
         </div>
-      )}
+        <div
+          className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide"
+          style={{ scrollSnapType: "x mandatory" }}
+        >
+          {TOOLS.map((tool) => {
+            const badge = tool.badge ? BADGE_STYLES[tool.badge] : null;
+            return (
+              <button
+                key={tool.id}
+                type="button"
+                onClick={navTo(tool.path)}
+                className="glass-card shrink-0 w-36 p-4 text-left cursor-pointer transition-colors hover:bg-[var(--color-surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 rounded-xl"
+                style={{ scrollSnapAlign: "start" }}
+              >
+                {badge && (
+                  <span
+                    className="inline-block text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full mb-2"
+                    style={{ background: badge.bg, color: badge.color }}
+                  >
+                    {badge.label}
+                  </span>
+                )}
+                {!badge && <div className="h-4 mb-2" aria-hidden />}
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+                  style={{ background: tool.iconBg, color: tool.iconColor }}
+                  aria-hidden
+                >
+                  {tool.icon}
+                </div>
+                <div className="font-semibold text-xs text-[var(--color-text-primary)] leading-tight mb-1">
+                  {tool.title}
+                </div>
+                <p className="text-[10px] text-[var(--color-text-tertiary)] leading-snug">
+                  {tool.desc}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
       {/* Smart notification — retention-focused message + CTA */}
       {(smartNotification || showDontBreak) && (
@@ -268,7 +510,7 @@ export function Dashboard() {
           aria-live="polite"
         >
           <span className="flex items-center gap-2">
-            <span aria-hidden>{smartNotification?.icon ?? "🔥"}</span>
+            {renderDataIcon(smartNotification?.icon ?? "🔥")}
             <span>{smartNotification?.message ?? "Don't break your streak! Log something today — glucose, a meal, or complete a reminder."}</span>
           </span>
           {smartNotification?.cta && (
@@ -309,66 +551,107 @@ export function Dashboard() {
         <DashboardSkeleton />
       ) : (
         <>
-          {/* Greeting + streak + control-level microcopy */}
-          <section className="space-y-1" aria-label="Greeting">
-            <span className="text-sm text-[var(--color-text-secondary)]">Good morning 👋</span>
-            <p className="text-xs text-[var(--color-text-tertiary)]">
-              {controlLevel.id === "beginner" && "You’re building a new habit — one small step today is enough."}
-              {controlLevel.id === "in_balance" && "Your routine is paying off — small, steady choices are working."}
-              {controlLevel.id === "high_performance" && "You’ve created strong control — keep doing what’s working for you."}
+          {/* Hero — score, greeting, estado */}
+          <section
+            className="glass-card p-6 sm:p-8"
+            aria-label="Health overview"
+          >
+            <p className="text-sm text-[var(--color-text-secondary)] mb-6">
+              Good morning{displayName ? `, ${displayName}` : ""}
             </p>
-          </section>
 
-          {streak > 0 && (
-            <section className="rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-600/10 border border-amber-400/30 p-5 flex items-center gap-4 streak-glow" aria-label="Streak">
-              <span className="text-4xl streak-pulse" aria-hidden>🔥</span>
-              <div>
-                <p className="font-display font-bold text-2xl text-amber-400">{streak} Day Streak</p>
-                <p className="text-sm text-[var(--color-text-secondary)]">You&apos;re building a powerful habit</p>
+            {/* Score */}
+            <div className="flex items-end gap-4 mb-3">
+              <p
+                className="font-display font-bold leading-none"
+                style={{
+                  fontSize: "clamp(56px, 14vw, 72px)",
+                  letterSpacing: "-0.04em",
+                  color: scoreState.state === "great"
+                    ? "var(--color-success)"
+                    : scoreState.state === "attention"
+                      ? "var(--color-warning)"
+                      : "var(--color-alert)",
+                }}
+                aria-label={`Health score: ${score} out of 100`}
+              >
+                {score}
+              </p>
+              <div className="pb-2 space-y-0.5">
+                <p
+                  className="text-sm font-semibold"
+                  style={{
+                    color: scoreState.state === "great"
+                      ? "var(--color-success)"
+                      : scoreState.state === "attention"
+                        ? "var(--color-warning)"
+                        : "var(--color-alert)",
+                  }}
+                >
+                  {scoreState.label}
+                </p>
+                <p className="text-xs text-[var(--color-text-tertiary)]">Health Score · 0–100</p>
               </div>
-            </section>
-          )}
+            </div>
 
-          {/* Hero — emotional message first, number secondary */}
-          <section className="rounded-2xl bg-[var(--color-accent-soft)]/50 border border-[var(--color-accent)]/25 p-6 text-center transition-base hover:border-[var(--color-accent)]/40" aria-label="Today's status">
-            <p className="text-xl sm:text-2xl font-display font-bold text-[var(--color-text-primary)] mb-2">{heroMessage}</p>
-            <p className="text-3xl sm:text-4xl font-display font-bold text-[var(--color-accent)] mb-0.5">{numberOfTheDay.value}</p>
-            <p className="text-sm text-[var(--color-text-tertiary)]">{numberOfTheDay.label}</p>
+            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-5">
+              {heroMessage}
+            </p>
+
+            {/* Context line: streak + day */}
+            <div className="flex items-center gap-2 text-sm mb-6">
+              {streak > 0 && (
+                <>
+                  <span className="text-amber-400 font-medium">🔥 {streak} day streak</span>
+                  <span className="text-[var(--color-border-default)]">·</span>
+                </>
+              )}
+              <span className="text-[var(--color-text-tertiary)]">Day {programDay} of 90</span>
+            </div>
+
+            <Link
+              to="/app/dashboard"
+              className="btn btn-primary w-full justify-center"
+              aria-label="Daily check-in"
+              style={{ minHeight: "48px" }}
+            >
+              Daily check-in
+            </Link>
           </section>
 
-          {/* Report for doctor — premium CTA */}
+          {/* Report for doctor */}
           <section aria-label="Report for doctor">
             <button
               type="button"
               onClick={navTo("/app/doctor-prep")}
-              className="w-full rounded-2xl bg-[var(--gradient-accent)] text-white font-bold py-5 px-5 flex items-center justify-center gap-3 shadow-[0_8px_32px_var(--color-accent-glow)] hover:shadow-[0_12px_40px_var(--color-accent-glow)] hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface-primary)]"
+              className="btn btn-primary w-full justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface-primary)]"
+              style={{ minHeight: "52px" }}
             >
-              <span className="text-2xl" aria-hidden>📄</span>
-              <span>Generate Doctor Report</span>
+              Generate Doctor Report
             </button>
           </section>
 
           {/* Tip of the day */}
-          <section className="rounded-2xl bg-[var(--color-blue-soft)]/30 border border-[var(--color-glucose)]/25 p-4" aria-label="Tip of the day">
-            <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-2 flex items-center gap-2">
-              <span aria-hidden>💡</span> Tip of the day
+          <section className="glass-card p-5" aria-label="Tip of the day">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-2">
+              Tip of the day
             </p>
             <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-              💡 Tip: {tipOfTheDay}
+              {tipOfTheDay}
             </p>
           </section>
 
           {/* Daily Coach — actionable tips */}
           {coachTips.length > 0 && (
-            <section className="rounded-2xl border border-[var(--color-success)]/25 bg-[var(--color-success-soft)]/15 p-4" aria-label="Daily Coach">
-              <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-3 flex items-center gap-2">
-                <span aria-hidden>🤖</span> Daily Coach
+            <section className="glass-card p-5" aria-label="Daily Coach">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-3">
+                Daily Coach
               </p>
-              <ul className="space-y-2">
+              <ul className="space-y-2.5">
                 {coachTips.map((t) => (
-                  <li key={t.id} className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
-                    <span aria-hidden>{t.icon}</span>
-                    <span>{t.text}</span>
+                  <li key={t.id} className="flex items-start gap-2.5 text-sm text-[var(--color-text-secondary)]">
+                    <span className="shrink-0 mt-0.5">{renderDataIcon(t.icon)}</span>
+                    <span className="leading-snug">{t.text}</span>
                   </li>
                 ))}
               </ul>
@@ -377,9 +660,9 @@ export function Dashboard() {
 
           {/* Smart alerts — pattern-based messages */}
           {smartAlerts.length > 0 && (
-            <section className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-hover)]/50 p-4" aria-label="Smart alerts">
-              <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-3 flex items-center gap-2">
-                <span aria-hidden>🚀</span> Smart alerts
+            <section className="glass-card p-5" aria-label="Smart alerts">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-3">
+                Smart alerts
               </p>
               <ul className="space-y-2 mb-3">
                 {smartAlerts.map((a) => (
@@ -387,13 +670,13 @@ export function Dashboard() {
                     key={a.id}
                     className={`flex items-center gap-2 text-sm rounded-lg px-3 py-2 ${
                       a.type === "positive"
-                        ? "bg-[var(--color-success-soft)]/40 text-[var(--color-success)]"
+                        ? "text-[var(--color-success)]"
                         : a.type === "warning"
-                          ? "bg-[var(--color-warning-soft)]/40 text-[var(--color-warning)]"
+                          ? "text-[var(--color-warning)]"
                           : "text-[var(--color-text-secondary)]"
                     }`}
                   >
-                    <span aria-hidden>{a.icon}</span>
+                    {renderDataIcon(a.icon)}
                     <span>{a.message}</span>
                   </li>
                 ))}
@@ -421,14 +704,14 @@ export function Dashboard() {
 
           {/* Glucose prediction — unicorn-level insight */}
           {predictions.length > 0 && (
-            <section className="rounded-2xl border border-[var(--color-glucose)]/25 bg-[var(--color-glucose)]/10 p-4" aria-label="Glucose prediction">
-              <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-2 flex items-center gap-2">
-                <span aria-hidden>📈</span> Predict your glucose
+            <section className="glass-card p-5" aria-label="Glucose prediction">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-3">
+                Glucose forecast
               </p>
               <ul className="space-y-2">
                 {predictions.map((p) => (
                   <li key={p.id} className="flex items-start gap-2 text-sm text-[var(--color-text-secondary)]">
-                    <span aria-hidden>{p.icon}</span>
+                    {renderDataIcon(p.icon)}
                     <span>{p.message}</span>
                   </li>
                 ))}
@@ -436,64 +719,118 @@ export function Dashboard() {
             </section>
           )}
 
-          {/* Metrics — cards with category colors */}
-          <section className="grid grid-cols-2 lg:grid-cols-4 gap-4" aria-label="Overview metrics">
-            <div className="stat-card border border-[var(--color-progress)]/25 bg-[var(--color-progress)]/10 hover:border-[var(--color-progress)]/40">
+          {/* Metrics — Apple Health style: label · value · context */}
+          <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid" aria-label="Overview metrics">
+            <div className="stat-card">
               <div className="label">Day on plan</div>
-              <div className="value">{programDay} of 90</div>
+              <div className="value">{programDay}</div>
+              <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1 leading-tight">of 90 · Week {Math.ceil(programDay / 7)}</div>
             </div>
-            <div className="stat-card border border-[var(--color-glucose)]/25 bg-[var(--color-glucose)]/10 hover:border-[var(--color-glucose)]/40">
-              <div className="label">Check-ins this week</div>
+            <div className="stat-card">
+              <div className="label">Check-ins</div>
               <div className="value">{checkInsDone}</div>
+              <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1 leading-tight">This week</div>
             </div>
-            <div className="stat-card border border-[var(--color-progress)]/25 bg-[var(--color-progress)]/10 hover:border-[var(--color-progress)]/40">
-              <div className="label">Today&apos;s tasks done</div>
+            <div className="stat-card">
+              <div className="label">Tasks done</div>
               <div className="value">{doneCount} / {todayCount}</div>
+              <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1 leading-tight">Today's program</div>
             </div>
-            <div className="stat-card border border-amber-400/25 bg-amber-500/10 hover:border-amber-400/40">
-              <div className="label">Best streak</div>
-              <div className="value">{bestStreak} days</div>
+            <div className="stat-card">
+              <div className="label">Streak</div>
+              <div className="flex items-baseline gap-1.5">
+                <div className="value">{streak}</div>
+                {streak >= bestStreak && streak > 1 && (
+                  <span className="text-[10px] font-semibold text-[var(--color-success)] uppercase tracking-wider">best</span>
+                )}
+              </div>
+              <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1 leading-tight">
+                {bestStreak > streak ? `Best: ${bestStreak} days` : "Days in a row"}
+              </div>
             </div>
           </section>
 
-          {/* Today's calories & sugar from meal photo logs — link to full report */}
-          <section className="grid grid-cols-2 gap-4" aria-label="Today's nutrition from meal photos">
-            <Link
-              to="/app/nutrition"
-              className="stat-card block transition-colors hover:bg-[var(--color-surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-nutrition)]/60 focus-visible:ring-offset-2 rounded-xl border border-[var(--color-nutrition)]/30 bg-[var(--color-nutrition)]/5"
-            >
-              <div className="label">Calorias hoje</div>
-              <div className="value">{todayNutrition.calories} kcal</div>
-              <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1">Fotos analisadas · valores est.</div>
-            </Link>
-            <Link
-              to="/app/nutrition"
-              className="stat-card block transition-colors hover:bg-[var(--color-surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-nutrition)]/60 focus-visible:ring-offset-2 rounded-xl border border-[var(--color-nutrition)]/30 bg-[var(--color-nutrition)]/5"
-            >
-              <div className="label">Açúcar hoje (est.)</div>
-              <div className="value">{todayNutrition.sugar}g</div>
-              <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1">Ver relatório por refeição/dia/mês/ano</div>
-            </Link>
+          {/* Nutrition — MyFitnessPal style: macro progress bars */}
+          <section className="glass-card p-5" aria-label="Today's nutrition">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">
+                Nutrition · Today
+              </p>
+              <Link
+                to="/app/nutrition"
+                className="text-xs font-medium text-[var(--color-accent)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] rounded"
+              >
+                See all →
+              </Link>
+            </div>
+            <div className="space-y-3.5">
+              {[
+                { label: "Calories", value: todayNutrition.calories, target: 2000, unit: "kcal", color: "var(--color-accent)" },
+                { label: "Protein", value: todayNutrition.protein, target: 60, unit: "g", color: "var(--color-success)" },
+                { label: "Sugar", value: todayNutrition.sugar, target: 50, unit: "g", color: todayNutrition.sugar > 50 ? "var(--color-warning)" : "var(--color-accent)" },
+              ].map(({ label, value, target, unit, color }) => (
+                <div key={label}>
+                  <div className="flex justify-between items-baseline mb-1.5">
+                    <span className="text-xs text-[var(--color-text-secondary)]">{label}</span>
+                    <span className="text-xs font-semibold text-[var(--color-text-primary)]">
+                      {value}{" "}
+                      <span className="font-normal text-[var(--color-text-tertiary)]">/ {target} {unit}</span>
+                    </span>
+                  </div>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--color-surface-hover)" }}>
+                    <div
+                      className="h-full rounded-full transition-[width] duration-500 ease-out"
+                      style={{ width: `${Math.min(100, Math.round((value / target) * 100))}%`, background: color }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-[10px] text-[var(--color-text-tertiary)] mt-3">From photo analysis · estimated values</p>
           </section>
 
           {/* Time in range + Emergency + Doctor prep + Reminders — category colors */}
           {(timeInRange !== null || todaysReminders.length > 0) && (
-            <section className="grid grid-cols-2 lg:grid-cols-4 gap-4" aria-label="Quick actions">
+            <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid" aria-label="Quick actions">
               {timeInRange !== null && (
                 <button
                   type="button"
                   onClick={navTo("/app/glucose")}
-                  className="stat-card block w-full text-left transition-base rounded-xl cursor-pointer border border-[var(--color-glucose)]/25 bg-[var(--color-glucose)]/10 hover:border-[var(--color-glucose)]/40"
+                  className="stat-card block w-full text-left cursor-pointer transition-base rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
                 >
                   <div className="label">Time in range</div>
-                  <div className="value">{timeInRange}%</div>
-                  <div className="text-[10px] text-[var(--color-text-tertiary)] mt-1">Blood sugar log</div>
+                  <div className="flex items-center gap-2.5 mt-2">
+                    {/* Apple Health–style arc ring */}
+                    <svg viewBox="0 0 36 36" className="w-9 h-9 shrink-0" aria-hidden>
+                      <circle cx="18" cy="18" r="14" fill="none" stroke="var(--color-border-subtle)" strokeWidth="3.5" />
+                      <circle
+                        cx="18" cy="18" r="14" fill="none"
+                        stroke={timeInRange >= 70 ? "var(--color-success)" : timeInRange >= 50 ? "var(--color-warning)" : "var(--color-alert)"}
+                        strokeWidth="3.5"
+                        strokeDasharray={`${(timeInRange / 100) * 87.96} 87.96`}
+                        strokeLinecap="round"
+                        transform="rotate(-90 18 18)"
+                      />
+                    </svg>
+                    <div>
+                      <div className="flex items-baseline gap-1">
+                        <span className="font-display font-bold text-xl text-[var(--color-text-primary)]">{timeInRange}</span>
+                        <span className="text-xs text-[var(--color-text-tertiary)]">%</span>
+                        {tirTrend !== null && tirTrend !== 0 && (
+                          <span className={`text-[9px] font-semibold ml-0.5 ${tirTrend > 0 ? "text-[var(--color-success)]" : "text-[var(--color-alert)]"}`}>
+                            {tirTrend > 0 ? "↑" : "↓"}{Math.abs(tirTrend)}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[10px] text-[var(--color-text-tertiary)] leading-tight">Last 30 days</div>
+                    </div>
+                  </div>
                 </button>
               )}
               <button
                 type="button"
                 onClick={navTo("/app/emergency")}
-                className="stat-card block w-full text-left transition-base rounded-xl cursor-pointer border border-[var(--color-alert)]/30 bg-[var(--color-alert)]/10 hover:border-[var(--color-alert)]/50"
+                className="stat-card block w-full text-left cursor-pointer transition-base rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
               >
                 <div className="label">Low blood sugar?</div>
                 <div className="value text-[var(--color-alert)]">What to do</div>
@@ -502,7 +839,7 @@ export function Dashboard() {
               <button
                 type="button"
                 onClick={navTo("/app/doctor-prep")}
-                className="stat-card block w-full text-left transition-base rounded-xl cursor-pointer border border-[var(--color-glucose)]/25 bg-[var(--color-glucose)]/10 hover:border-[var(--color-glucose)]/40"
+                className="stat-card block w-full text-left cursor-pointer transition-base rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
               >
                 <div className="label">Doctor visit</div>
                 <div className="value">Summary</div>
@@ -511,7 +848,7 @@ export function Dashboard() {
               <button
                 type="button"
                 onClick={navTo("/app/reminders")}
-                className="stat-card block w-full text-left transition-base rounded-xl cursor-pointer border border-[var(--color-progress)]/25 bg-[var(--color-progress)]/10 hover:border-[var(--color-progress)]/40"
+                className="stat-card block w-full text-left cursor-pointer transition-base rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
               >
                 <div className="label">Reminders today</div>
                 <div className="value">{todaysReminders.filter((r) => r.done).length} / {todaysReminders.length}</div>
@@ -525,7 +862,7 @@ export function Dashboard() {
               <button
                 type="button"
                 onClick={navTo("/app/emergency")}
-                className="stat-card block w-full text-left transition-base rounded-xl cursor-pointer border border-[var(--color-alert)]/30 bg-[var(--color-alert)]/10 hover:border-[var(--color-alert)]/50"
+                className="stat-card block w-full text-left cursor-pointer transition-base rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
               >
                 <div className="label">Low blood sugar?</div>
                 <div className="value text-[var(--color-alert)]">What to do</div>
@@ -533,7 +870,7 @@ export function Dashboard() {
               <button
                 type="button"
                 onClick={navTo("/app/doctor-prep")}
-                className="stat-card block w-full text-left transition-base rounded-xl cursor-pointer border border-[var(--color-glucose)]/25 bg-[var(--color-glucose)]/10 hover:border-[var(--color-glucose)]/40"
+                className="stat-card block w-full text-left cursor-pointer transition-base rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
               >
                 <div className="label">Doctor visit</div>
                 <div className="value">Summary</div>
@@ -541,7 +878,7 @@ export function Dashboard() {
               <button
                 type="button"
                 onClick={navTo("/app/reminders")}
-                className="stat-card block w-full text-left transition-base rounded-xl cursor-pointer border border-[var(--color-progress)]/25 bg-[var(--color-progress)]/10 hover:border-[var(--color-progress)]/40"
+                className="stat-card block w-full text-left cursor-pointer transition-base rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
               >
                 <div className="label">Reminders</div>
                 <div className="value">Set up</div>
@@ -551,7 +888,7 @@ export function Dashboard() {
 
           {/* Week 1 vs now — before/after view */}
           {weekComparison && (
-            <section className="glass-card p-6 sm:p-8 border border-[var(--color-progress)]/25 bg-[var(--color-progress)]/5" aria-label="Week 1 vs now">
+            <section className="glass-card p-6 sm:p-8" aria-label="Week 1 vs now">
               <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-3 tracking-[var(--tracking-heading)]">
                 Week 1 vs now
               </h2>
@@ -575,8 +912,8 @@ export function Dashboard() {
                   <p className="text-xs text-[var(--color-text-tertiary)] mb-1">This week</p>
                   <div className="h-2 rounded-full bg-[var(--color-surface-hover)] overflow-hidden mb-1">
                     <div
-                      className="h-full rounded-full bg-[var(--gradient-accent)]"
-                      style={{ width: `${Math.min(100, Math.max(0, weekComparison.currentWeekTir))}%` }}
+                      className="h-full rounded-full"
+                      style={{ background: "var(--color-accent)", width: `${Math.min(100, Math.max(0, weekComparison.currentWeekTir))}%` }}
                     />
                   </div>
                   <p className="text-sm font-medium text-[var(--color-text-primary)]">
@@ -586,7 +923,7 @@ export function Dashboard() {
               </div>
               <p className="text-sm text-[var(--color-text-secondary)] mb-4">
                 {weekComparison.improvement > 0 &&
-                  `Your glucose stability improved ${weekComparison.improvement}% 🎉`}
+                  `Your glucose stability improved ${weekComparison.improvement}%`}
                 {weekComparison.improvement < 0 &&
                   `Your glucose has been more variable by ${Math.abs(
                     weekComparison.improvement
@@ -599,123 +936,83 @@ export function Dashboard() {
                 onClick={handleShareProgress}
                 className="btn btn-secondary w-full justify-center gap-2 mt-2"
               >
-                <span aria-hidden>📤</span> Share your progress
+                <Share2 size={16} aria-hidden /> Share your progress
               </button>
             </section>
           )}
 
-          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8">
-            {/* Control score — emotional state (green / yellow / red) + phrase */}
-            <section
-              className={`glass-card p-6 sm:p-8 flex flex-col items-center border-2 transition-base ${
-                scoreState.state === "great"
-                  ? "border-[var(--color-success)]/40 bg-[var(--color-success-soft)]/20"
-                  : scoreState.state === "attention"
-                    ? "border-[var(--color-warning)]/40 bg-[var(--color-warning-soft)]/20"
-                    : "border-[var(--color-alert)]/30 bg-[var(--color-alert)]/10"
-              }`}
-              aria-labelledby="control-score-title"
-            >
-              <h2 id="control-score-title" className="text-base font-semibold text-[var(--color-text-primary)] mb-1 w-full text-left tracking-[var(--tracking-heading)]">
-                Health Score
+          {/* Today's program — full width */}
+          <section
+            className="glass-card p-6 sm:p-8"
+            aria-label={`Today's program, ${doneCount} of ${todayCount} tasks completed`}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-base font-semibold text-[var(--color-text-primary)] tracking-[var(--tracking-heading)]">
+                Today&apos;s program
               </h2>
-              <p className="text-xs text-[var(--color-text-tertiary)] mb-2 w-full text-left">0–100 · combines habits and numbers</p>
-              <div className="relative w-36 h-36 flex items-center justify-center" aria-hidden>
-                <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--color-border-subtle)" strokeWidth="2.8" />
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="15.9"
-                    fill="none"
-                    stroke={scoreState.state === "great" ? "var(--color-success)" : scoreState.state === "attention" ? "var(--color-warning)" : "var(--color-alert)"}
-                    strokeWidth="2.8"
-                    strokeLinecap="round"
-                    strokeDasharray={`${(score / 100) * 100} ${100 - (score / 100) * 100}`}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="font-display font-bold text-2xl text-[var(--color-text-primary)]">{score}</span>
-                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: scoreState.state === "great" ? "var(--color-success)" : scoreState.state === "attention" ? "var(--color-warning)" : "var(--color-alert)" }}>{scoreState.label}</span>
-                </div>
-              </div>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-4 text-center leading-relaxed max-w-[280px]">
-                {scoreState.phrase}
-              </p>
-              <Link
-                to="/app/dashboard"
-                className="btn btn-primary mt-6 w-full justify-center gap-2 min-h-[var(--touch-min)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface-active)]"
-                aria-label="Daily check-in"
-              >
-                <span aria-hidden>📊</span> Daily check-in
-              </Link>
-            </section>
-
-            {/* Today's program — tasks category (purple tint) */}
-            <section
-              className="glass-card p-6 sm:p-8 border border-[var(--color-progress)]/20 bg-[var(--color-progress)]/5"
-              aria-label={`Today's program, ${doneCount} of ${todayCount} tasks completed`}
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-base font-semibold text-[var(--color-text-primary)] tracking-[var(--tracking-heading)]">
-                  Today&apos;s program
-                </h2>
-                <span className="text-xs text-[var(--color-text-tertiary)]" aria-live="polite">
-                  {doneCount}/{todayCount} done
-                </span>
-              </div>
-              <ul className="space-y-4" role="list">
-                {missions.map((task) => (
-                  <li
-                    key={task.id}
-                    className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl bg-[var(--color-surface-hover)]/50"
+              <span className="text-xs text-[var(--color-text-tertiary)]" aria-live="polite">
+                {doneCount}/{todayCount} done
+              </span>
+            </div>
+            <ul className="space-y-4" role="list">
+              {missions.map((task) => (
+                <li
+                  key={task.id}
+                  className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl bg-[var(--color-surface-hover)]/50"
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggleMissionDone(task.id, !task.done)}
+                    aria-label={task.done ? `Mark "${task.title}" as incomplete` : `Mark "${task.title}" as complete`}
+                    aria-pressed={task.done}
+                    className={`w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-1 ${
+                      task.done
+                        ? "bg-[var(--color-success)] border-[var(--color-success)] text-white"
+                        : "border-[var(--color-text-tertiary)] hover:border-[var(--color-accent)]"
+                    }`}
                   >
-                    <span
-                      className={`w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center text-xs ${
-                        task.done
-                          ? "bg-[var(--color-success)] border-[var(--color-success)] text-white"
-                          : "border-[var(--color-text-tertiary)]"
-                      }`}
-                      aria-hidden
-                      onClick={() => toggleMissionDone(task.id, !task.done)}
-                    >
-                      {task.done ? "✓" : ""}
-                    </span>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-[var(--color-text-primary)] text-sm">{task.title}</p>
-                      <p className="text-xs text-[var(--color-text-tertiary)] mt-1 line-clamp-2 leading-relaxed">
-                        {task.description}
-                      </p>
-                    </div>
-                    <Link
-                      to={task.href}
-                      className="btn btn-primary flex-shrink-0 py-2.5 px-5 text-sm min-h-[var(--touch-min)] w-full sm:w-auto justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface-active)]"
-                    >
-                      Go
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          </div>
+                    {task.done ? "✓" : ""}
+                  </button>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-[var(--color-text-primary)] text-sm">{task.title}</p>
+                    <p className="text-xs text-[var(--color-text-tertiary)] mt-1 line-clamp-2 leading-relaxed">
+                      {task.description}
+                    </p>
+                  </div>
+                  <Link
+                    to={task.href}
+                    className="btn btn-primary flex-shrink-0 py-2.5 px-5 text-sm min-h-[var(--touch-min)] w-full sm:w-auto justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface-active)]"
+                  >
+                    Go
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
 
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8">
             {/* Insights card — data/glucose tint */}
-            <section className="glass-card p-6 sm:p-8 border border-[var(--color-glucose)]/15 bg-[var(--color-glucose)]/5" aria-label="Insights">
+            <section className="glass-card p-6 sm:p-8" aria-label="Insights">
               <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-3 tracking-[var(--tracking-heading)]">
                 Insights from your last days
               </h2>
-              <ul className="space-y-3 text-sm">
-                {insights.map((insight) => (
-                  <li
-                    key={insight.id}
-                    className="rounded-lg border border-[var(--color-border-subtle)] bg-[var(--color-surface-hover)]/60 p-3"
-                  >
-                    <p className="font-medium text-[var(--color-text-primary)] mb-1">{insight.title}</p>
-                    <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">{insight.body}</p>
-                  </li>
-                ))}
-              </ul>
+              {insights.length === 0 ? (
+                <p className="text-sm text-[var(--color-text-tertiary)] leading-relaxed py-2">
+                  Patterns will appear here as you log more readings and meals.
+                </p>
+              ) : (
+                <ul className="space-y-3 text-sm">
+                  {insights.map((insight) => (
+                    <li
+                      key={insight.id}
+                      className="rounded-lg border border-[var(--color-border-subtle)] bg-[var(--color-surface-hover)]/60 p-3"
+                    >
+                      <p className="font-medium text-[var(--color-text-primary)] mb-1">{insight.title}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">{insight.body}</p>
+                    </li>
+                  ))}
+                </ul>
+              )}
               <button
                 type="button"
                 onClick={navTo("/app/insights")}
@@ -726,7 +1023,7 @@ export function Dashboard() {
             </section>
 
             {/* Monthly challenge — success/green tint */}
-            <section className="glass-card p-6 sm:p-8 relative overflow-hidden border border-[var(--color-success)]/20 bg-[var(--color-success-soft)]/10" aria-labelledby="challenge-title">
+            <section className="glass-card p-6 sm:p-8 relative overflow-hidden" aria-labelledby="challenge-title">
               <span
                 className="absolute top-6 right-6 text-xs font-semibold px-2.5 py-1 rounded-lg bg-[var(--color-success-soft)] text-[var(--color-success)]"
                 aria-hidden
@@ -750,8 +1047,8 @@ export function Dashboard() {
                 </div>
                 <div className="h-2 rounded-full bg-[var(--color-surface-hover)] overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-[var(--gradient-accent)]"
-                    style={{ width: `${Math.min(100, (challenge.completedDays / challenge.totalDays) * 100)}%` }}
+                    className="h-full rounded-full"
+                    style={{ background: "var(--color-accent)", width: `${Math.min(100, (challenge.completedDays / challenge.totalDays) * 100)}%` }}
                   />
                 </div>
               </div>
@@ -767,7 +1064,7 @@ export function Dashboard() {
                   }`}
                   aria-label="Mark monthly challenge complete for today"
                 >
-                  <span aria-hidden>🏆</span> {challenge.completedToday ? "Marked" : "Mark today"}
+                  {challenge.completedToday ? "Marked" : "Mark today"}
                 </button>
               </div>
             </section>
@@ -788,9 +1085,9 @@ export function Dashboard() {
             </section>
 
             {/* Achievements feed */}
-            <section className="glass-card p-6 sm:p-8 border border-amber-400/20 bg-amber-500/5" aria-label="Recent achievements">
-              <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-3 tracking-[var(--tracking-heading)] flex items-center gap-2">
-                <span aria-hidden>🏆</span> Badges & achievements
+            <section className="glass-card p-6 sm:p-8" aria-label="Recent achievements">
+              <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-3 tracking-[var(--tracking-heading)]">
+                Badges &amp; achievements
               </h2>
               {achievements.length === 0 ? (
                 <p className="text-sm text-[var(--color-text-secondary)]">
@@ -800,7 +1097,7 @@ export function Dashboard() {
                 <ul className="space-y-3 text-sm">
                   {achievements.map((a) => (
                     <li key={a.id} className="rounded-lg bg-[var(--color-surface-hover)]/60 p-3 flex items-start gap-3">
-                      <span className="text-2xl shrink-0" aria-hidden>{ACHIEVEMENT_BADGES[a.id] ?? "🏅"}</span>
+                      <span className="shrink-0">{BADGE_ICON_MAP[a.id] ?? <Medal size={24} className="text-[var(--color-text-muted)]" aria-hidden />}</span>
                       <div>
                         <p className="font-medium text-[var(--color-text-primary)] mb-0.5">{a.title}</p>
                         <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">

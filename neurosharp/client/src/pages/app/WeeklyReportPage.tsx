@@ -1,4 +1,5 @@
 import { trpc } from "../../trpc";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 const DEMO = { checkins: 1, exercises: 0, avgScore: 32, streak: 10, totalXP: 65, longestStreak: 1, programDay: 2 };
 
@@ -19,11 +20,14 @@ export function WeeklyReportPage() {
         </div>
       </div>
 
-      {isError && (
-        <div className="mb-4 px-4 py-2 rounded-lg bg-[var(--color-warning-soft)] border border-[var(--color-warning)]/30 text-[var(--color-text)] text-sm">
-          Demo mode — showing sample data.
-        </div>
-      )}
+      <HowToUseBanner
+        pageKey="ns-weekly-report"
+        steps={[
+          "Review your check-ins, exercises, cognitive score and streak for the last 7 days.",
+          "The chart below shows how your score evolved through the week.",
+          "Consistent daily training generates a stronger weekly report over time.",
+        ]}
+      />
 
       {/* 4 summary cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
@@ -58,7 +62,7 @@ export function WeeklyReportPage() {
         <div className="h-36 flex items-end justify-around gap-1">
           {[32, 34, 33, 35].map((s, i) => (
             <div key={i} className="flex-1 flex flex-col items-center">
-              <div className="w-full rounded-t bg-[var(--gradient-accent)] min-h-[4px]" style={{ height: `${s}%` }} />
+              <div className="w-full rounded-t bg-[var(--color-accent)] min-h-[4px]" style={{ height: `${s}%` }} />
               <span className="text-[10px] text-[var(--color-text-muted)] mt-1">D{i + 1}</span>
             </div>
           ))}
@@ -73,7 +77,7 @@ export function WeeklyReportPage() {
           <span>Day 90</span>
         </div>
         <div className="h-2 bg-[var(--color-surface)] rounded-full overflow-hidden">
-          <div className="h-full rounded-full bg-[var(--gradient-accent)]" style={{ width: `${(programDay / 90) * 100}%` }} />
+          <div className="h-full rounded-full bg-[var(--color-accent)]" style={{ width: `${(programDay / 90) * 100}%` }} />
         </div>
         <div className="flex justify-between items-center mt-2">
           <span className="text-xs text-[var(--color-text-muted)]">{Math.round((programDay / 90) * 100)}% complete</span>

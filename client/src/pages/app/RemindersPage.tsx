@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 import {
   getReminders,
   addReminder,
@@ -58,6 +59,15 @@ export function RemindersPage() {
         <h1 className="text-xl font-display font-bold text-[var(--color-text)]">Reminders</h1>
         <p className="text-sm text-[var(--color-text-muted)] mt-0.5">Medication and blood sugar check reminders. Mark done when you complete them.</p>
       </div>
+
+      <HowToUseBanner
+        pageKey="reminders"
+        steps={[
+          "Tap the '+' button at the bottom to create a medication or glucose check reminder.",
+          "Toggle the switch to enable or disable a reminder without deleting it.",
+          "Mark each reminder as done after completing it — your streak counts on it.",
+        ]}
+      />
 
       {/* Today's checklist */}
       <div className="glass-card p-5">
@@ -134,7 +144,7 @@ export function RemindersPage() {
                 <button
                   type="button"
                   onClick={() => toggleEnabled(r)}
-                  className={`w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center text-xs ${r.enabled ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-black" : "border-[var(--color-text-tertiary)] opacity-50"}`}
+                  className={`w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center text-xs ${r.enabled ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-[var(--color-accent-text)]" : "border-[var(--color-text-tertiary)] opacity-50"}`}
                   title={r.enabled ? "Disable" : "Enable"}
                 >
                   {r.enabled ? "✓" : ""}

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 import { getAverageGlucose, estimateA1c, getRecentLogs, getTimeInRangePercent } from "../../data/glucoseLogs";
 import { getGoals } from "../../data/goals";
 import { getReminders, getCompletionsForDate } from "../../data/reminders";
@@ -70,6 +71,15 @@ ul{list-style:none;padding:0}li{padding:4px 0}
         </div>
         <Link to="/app/dashboard" className="text-sm text-[var(--color-accent)] hover:underline">← Dashboard</Link>
       </div>
+
+      <HowToUseBanner
+        pageKey="doctor-prep"
+        steps={[
+          "Review your 30-day summary of glucose, medications and meal logs below.",
+          "Print or share the report using the button at the bottom of the page.",
+          "Bring the suggested questions to guide your conversation with your doctor.",
+        ]}
+      />
 
       <div className="glass-card p-5 space-y-4">
         <h2 className="text-sm font-semibold text-[var(--color-text)]">Last 30 days summary</h2>

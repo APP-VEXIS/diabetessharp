@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Target, Pill, Settings, Zap, CalendarDays } from "lucide-react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 const PROGRAM_FIELDS = [
   { label: "Age Group", value: "35" },
@@ -19,6 +21,15 @@ export function ProfilePage() {
         <p className="text-sm text-[var(--color-text-muted)] mt-0.5">Manage your health profile and account settings.</p>
       </div>
 
+      <HowToUseBanner
+        pageKey="profile"
+        steps={[
+          "Review your program day, streak and current level at a glance.",
+          "Tap 'Update Questionnaire' to adjust your health goals and conditions.",
+          "Your medications and supplements listed here are shared with Dr. Marcus.",
+        ]}
+      />
+
       <div className="space-y-6">
         {/* User card */}
         <div className="glass-card p-5 flex items-center gap-4">
@@ -30,10 +41,10 @@ export function ProfilePage() {
             <p className="text-sm text-[var(--color-text-muted)] truncate">user@example.com</p>
             <div className="flex gap-2 mt-2 flex-wrap">
               <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded bg-[var(--color-success)]/20 text-[var(--color-success)] border border-[var(--color-success)]/30">
-                ⚡ Level 1
+                <Zap size={11} /> Level 1
               </span>
               <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
-                📅 Day 2 of 90
+                <CalendarDays size={11} /> Day 2 of 90
               </span>
             </div>
           </div>
@@ -42,7 +53,7 @@ export function ProfilePage() {
         {/* Program Details */}
         <div className="glass-card p-5">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-4">
-            <span className="text-[var(--color-accent)]">🎯</span> Program Details
+            <Target size={16} className="text-[var(--color-accent)] shrink-0" /> Program Details
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {PROGRAM_FIELDS.map((f) => (
@@ -56,14 +67,14 @@ export function ProfilePage() {
             type="button"
             className="flex items-center gap-2 mt-4 mx-auto text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
           >
-            <span>⚙️</span> Update Questionnaire
+            <Settings size={14} /> Update Questionnaire
           </button>
         </div>
 
         {/* Medications */}
         <div className="glass-card p-5">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">📎</span> Medications
+            <Pill size={16} className="text-[var(--color-accent)] shrink-0" /> Medications
           </h3>
           <p className="text-xs text-[var(--color-text-muted)] mb-3">
             Track medications you're taking. This helps Dr. James provide more relevant guidance.

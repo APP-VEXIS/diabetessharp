@@ -1,11 +1,33 @@
 import { useState } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
+
+const THEME_KEY = "neurosharp_theme";
+
+type Theme = "light" | "dark";
+
+function getStoredTheme(): Theme {
+  try {
+    const s = localStorage.getItem(THEME_KEY);
+    if (s === "light" || s === "dark") return s;
+  } catch {}
+  return "dark";
+}
+
+function applyTheme(t: Theme) {
+  document.documentElement.setAttribute("data-theme", t);
+  try { localStorage.setItem(THEME_KEY, t); } catch {}
+}
 
 export function SettingsPage() {
   const [medication, setMedication] = useState("");
   const [supplement, setSupplement] = useState("");
-  const [darkMode, setDarkMode] = useState(true);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [theme, setTheme] = useState<Theme>(getStoredTheme);
   const [pushEnabled, setPushEnabled] = useState(false);
+
+  const handleThemeChange = (next: Theme) => {
+    setTheme(next);
+    applyTheme(next);
+  };
 
   return (
     <div>
@@ -14,25 +36,37 @@ export function SettingsPage() {
         <p className="text-sm text-[var(--color-text-muted)] mt-0.5">Manage your account and preferences.</p>
       </div>
 
-      <div className="space-y-6">
+      <HowToUseBanner
+        pageKey="ns-settings"
+        steps={[
+          "Add your medications to help Dr. Marcus give more accurate and personalised guidance.",
+          "Toggle the app theme between light and dark to match your preference.",
+          "Your settings are saved instantly and apply across the full app.",
+        ]}
+      />
+
+      <div className="space-y-4">
+
         {/* Medications */}
         <div className="glass-card p-5">
-          <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">📎</span> Medications
-          </h3>
+          <h3 className="text-sm font-semibold text-[var(--color-text)] mb-1">Medications</h3>
           <p className="text-xs text-[var(--color-text-muted)] mb-3">
-            Track medications you're taking. This helps Dr. Marcus provide more relevant guidance.
+            Track medications you&apos;re taking. This helps Dr. Marcus provide more relevant guidance.
           </p>
           <p className="text-xs text-[var(--color-text-muted)] mb-3">No medications added.</p>
           <div className="flex gap-2">
             <input
               type="text"
-              placeholder="Add medication..."
+              placeholder="Add medication…"
               value={medication}
               onChange={(e) => setMedication(e.target.value)}
               className="input-field flex-1 min-h-[44px]"
             />
-            <button type="button" className="px-4 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] font-medium hover:bg-[var(--color-surface-hover)] min-h-[44px]">
+            <button
+              type="button"
+              className="px-4 rounded-xl border text-[var(--color-text)] font-medium min-h-[44px] transition-colors hover:bg-[var(--color-surface-hover)]"
+              style={{ background: "var(--color-card)", borderColor: "var(--color-border)" }}
+            >
               Add
             </button>
           </div>
@@ -40,22 +74,24 @@ export function SettingsPage() {
 
         {/* Supplements */}
         <div className="glass-card p-5">
-          <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">⚡</span> Supplements
-          </h3>
+          <h3 className="text-sm font-semibold text-[var(--color-text)] mb-1">Supplements</h3>
           <p className="text-xs text-[var(--color-text-muted)] mb-3">
-            Track supplements you're taking to optimize your program.
+            Track supplements you&apos;re taking to optimize your program.
           </p>
           <p className="text-xs text-[var(--color-text-muted)] mb-3">No supplements added.</p>
           <div className="flex gap-2">
             <input
               type="text"
-              placeholder="Add supplement..."
+              placeholder="Add supplement…"
               value={supplement}
               onChange={(e) => setSupplement(e.target.value)}
               className="input-field flex-1 min-h-[44px]"
             />
-            <button type="button" className="px-4 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] font-medium hover:bg-[var(--color-surface-hover)] min-h-[44px]">
+            <button
+              type="button"
+              className="px-4 rounded-xl border text-[var(--color-text)] font-medium min-h-[44px] transition-colors hover:bg-[var(--color-surface-hover)]"
+              style={{ background: "var(--color-card)", borderColor: "var(--color-border)" }}
+            >
               Add
             </button>
           </div>
@@ -63,21 +99,17 @@ export function SettingsPage() {
 
         {/* Subscription */}
         <div className="glass-card p-5">
-          <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">🛡️</span> Subscription
-          </h3>
+          <h3 className="text-sm font-semibold text-[var(--color-text)] mb-1">Subscription</h3>
           <p className="text-sm text-[var(--color-text)] font-medium mt-2">Free Plan</p>
           <p className="text-xs text-[var(--color-text-muted)] mb-4">Upgrade to unlock all features</p>
-          <button type="button" className="w-full py-3 rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-semibold hover:opacity-95 transition-opacity">
+          <button type="button" className="btn btn-primary w-full justify-center">
             Upgrade to Premium
           </button>
         </div>
 
         {/* Stats Summary */}
         <div className="glass-card p-5">
-          <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-4">
-            <span className="text-[var(--color-accent)]">👤</span> Stats Summary
-          </h3>
+          <h3 className="text-sm font-semibold text-[var(--color-text)] mb-4">Stats Summary</h3>
           <div className="grid grid-cols-3 gap-4">
             <div>
               <div className="font-display font-bold text-2xl text-[var(--color-accent)]">65</div>
@@ -94,21 +126,17 @@ export function SettingsPage() {
           </div>
         </div>
 
-        {/* Install app on phone */}
+        {/* Install app */}
         <div className="glass-card p-5">
-          <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">📱</span> Add to Home Screen
-          </h3>
+          <h3 className="text-sm font-semibold text-[var(--color-text)] mb-1">Add to Home Screen</h3>
           <p className="text-xs text-[var(--color-text-muted)]">
-            On your phone, tap the <strong>&quot;Add to phone&quot;</strong> button in the bar above the bottom navigation to install NeuroSharp as an app icon for quick access.
+            On your phone, tap the <strong>&quot;Add to phone&quot;</strong> button in the bar above the bottom navigation to install NeuroSharp as an app icon.
           </p>
         </div>
 
         {/* Notifications */}
         <div className="glass-card p-5">
-          <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">🔔</span> Notifications
-          </h3>
+          <h3 className="text-sm font-semibold text-[var(--color-text)] mb-1">Notifications</h3>
           <div className="flex items-center justify-between mt-3">
             <div>
               <p className="text-sm font-medium text-[var(--color-text)]">Push Notifications</p>
@@ -120,7 +148,7 @@ export function SettingsPage() {
               className={`px-4 py-2 rounded-xl font-semibold text-sm transition-colors min-h-[44px] ${
                 pushEnabled
                   ? "bg-[var(--color-surface)] text-[var(--color-text-muted)]"
-                  : "bg-[var(--gradient-accent)] text-[var(--color-accent-text)]"
+                  : "bg-[var(--color-accent)] text-[var(--color-accent-text)]"
               }`}
             >
               {pushEnabled ? "Disable" : "Enable"}
@@ -130,10 +158,10 @@ export function SettingsPage() {
 
         {/* Appearance */}
         <div className="glass-card p-5">
-          <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2 mb-1">
-            <span className="text-[var(--color-accent)]">🎨</span> Appearance
-          </h3>
-          <div className="flex items-center justify-between mt-3 mb-4">
+          <h3 className="text-sm font-semibold text-[var(--color-text)] mb-3">Appearance</h3>
+
+          {/* Toggle */}
+          <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-sm font-medium text-[var(--color-text)]">Dark Mode</p>
               <p className="text-xs text-[var(--color-text-muted)]">Easy on the eyes in low-light environments</p>
@@ -141,58 +169,55 @@ export function SettingsPage() {
             <button
               type="button"
               role="switch"
-              aria-checked={darkMode}
-              onClick={() => setDarkMode(!darkMode)}
-              className={`relative w-14 h-8 rounded-full transition-colors shrink-0 ${
-                darkMode ? "bg-[var(--color-accent)]" : "bg-[var(--color-surface)]"
-              }`}
+              aria-checked={theme === "dark"}
+              onClick={() => handleThemeChange(theme === "dark" ? "light" : "dark")}
+              className="relative w-14 h-8 rounded-full transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+              style={{ background: theme === "dark" ? "var(--color-accent)" : "var(--color-border)" }}
             >
               <span
-                className={`absolute top-1 w-6 h-6 rounded-full bg-white shadow transition-transform flex items-center justify-center text-sm ${
-                  darkMode ? "left-7" : "left-1"
-                }`}
-              >
-                {darkMode ? "🌙" : "☀️"}
-              </span>
+                className="absolute top-1 w-6 h-6 rounded-full shadow-[var(--shadow-elevation-low)] transition-transform"
+                style={{
+                  background: "var(--color-surface-elevated)",
+                  left: theme === "dark" ? "1.75rem" : "0.25rem",
+                }}
+                aria-hidden
+              />
             </button>
           </div>
+
+          {/* Theme selector */}
           <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => setTheme("light")}
-              className={`p-3 rounded-xl border text-left transition-colors ${
-                theme === "light"
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
-                  : "border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-border-strong)]"
-              }`}
-            >
-              <span className="text-[var(--color-accent)] text-lg">☀️</span>
-              <p className="text-sm font-medium text-[var(--color-text)] mt-1">Light</p>
-              <div className="flex gap-0.5 mt-2 h-1.5 rounded overflow-hidden">
-                <div className="w-1/3 bg-white rounded" />
-                <div className="w-1/3 bg-[var(--color-accent)] rounded" />
-                <div className="w-1/3 bg-[var(--color-text-muted)] rounded" />
-              </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => setTheme("dark")}
-              className={`p-3 rounded-xl border text-left transition-colors ${
-                theme === "dark"
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
-                  : "border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-border-strong)]"
-              }`}
-            >
-              <span className="text-[var(--color-info)] text-lg">🌙</span>
-              <p className="text-sm font-medium text-[var(--color-text)] mt-1">Dark</p>
-              <div className="flex gap-0.5 mt-2 h-1.5 rounded overflow-hidden">
-                <div className="w-1/3 bg-[var(--color-surface)] rounded" />
-                <div className="w-1/3 bg-[var(--color-accent)] rounded" />
-                <div className="w-1/3 bg-[var(--color-surface)] rounded" />
-              </div>
-            </button>
+            {(["light", "dark"] as Theme[]).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => handleThemeChange(t)}
+                className={`p-3 rounded-xl border text-left transition-colors ${
+                  theme === t
+                    ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
+                    : "border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-border-strong)]"
+                }`}
+                aria-pressed={theme === t}
+              >
+                <p className="text-sm font-medium text-[var(--color-text)] capitalize">{t}</p>
+                <div className="flex gap-0.5 mt-2 h-1.5 rounded overflow-hidden">
+                  <div
+                    className="w-1/3 rounded"
+                    style={{ background: t === "light" ? "#f8f9fa" : "#0d1117" }}
+                    aria-hidden
+                  />
+                  <div className="w-1/3 rounded bg-[var(--color-accent)]" aria-hidden />
+                  <div
+                    className="w-1/3 rounded"
+                    style={{ background: t === "light" ? "#6b7280" : "#374151" }}
+                    aria-hidden
+                  />
+                </div>
+              </button>
+            ))}
           </div>
         </div>
+
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -129,6 +130,15 @@ export function DrMarcusPage() {
         </p>
       </div>
 
+      <HowToUseBanner
+        pageKey="ns-dr-marcus"
+        steps={[
+          "Type your question or choose a suggested topic to begin.",
+          "Dr. Marcus uses your cognitive scores and exercise history for personalized guidance.",
+          "Always confirm medical decisions with your own doctor.",
+        ]}
+      />
+
       <div className="glass-card flex-1 flex flex-col min-h-0 overflow-hidden">
         {/* Chat messages */}
         <div
@@ -150,7 +160,7 @@ export function DrMarcusPage() {
               <div
                 className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                   msg.role === "user"
-                    ? "bg-[var(--gradient-accent)] text-[var(--color-accent-text)] ml-auto"
+                    ? "bg-[var(--color-accent)] text-[var(--color-accent-text)] ml-auto"
                     : "bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)]"
                 }`}
               >
@@ -187,7 +197,7 @@ export function DrMarcusPage() {
                 type="button"
                 onClick={() => send(prompt)}
                 disabled={isTyping}
-                className="text-left text-sm px-4 py-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] hover:shadow-sm transition-all disabled:opacity-50 font-medium"
+                className="text-left text-sm px-4 py-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] hover:shadow-sm transition-colors disabled:opacity-50 font-medium"
               >
                 {prompt}
               </button>
@@ -216,7 +226,7 @@ export function DrMarcusPage() {
             <button
               type="submit"
               disabled={!input.trim() || isTyping}
-              className="shrink-0 w-12 h-[44px] rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none transition-opacity"
+              className="shrink-0 w-12 h-[44px] rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none transition-opacity"
               aria-label="Send"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

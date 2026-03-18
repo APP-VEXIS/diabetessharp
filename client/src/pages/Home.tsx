@@ -147,13 +147,13 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-4">
                 <Link
                   to="/quiz"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-bold text-base sm:text-lg shadow-lg hover:opacity-95 transition-opacity border-2 border-transparent hover:border-[var(--color-accent-hover)] touch-manipulation active:scale-[0.98]"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] font-bold text-base sm:text-lg shadow-lg hover:opacity-95 transition-opacity border-2 border-transparent hover:border-[var(--color-accent-hover)] touch-manipulation active:scale-[0.98]"
                 >
-                  <span>🔥</span> Take the Free Assessment — 2 Min
+                  <span aria-hidden>🔥</span> Take the Free Assessment — 2 Min
                 </Link>
                 <Link
                   to="/advertorial"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-5 sm:px-6 py-3.5 sm:py-4 min-h-[52px] rounded-xl border-2 border-[var(--color-border)] text-[var(--color-text)] font-semibold hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-all touch-manipulation active:scale-[0.98]"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-5 sm:px-6 py-3.5 sm:py-4 min-h-[52px] rounded-xl border-2 border-[var(--color-border)] text-[var(--color-text)] font-semibold hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-colors touch-manipulation active:scale-[0.98]"
                 >
                   Read the Science
                 </Link>
@@ -224,9 +224,9 @@ export default function Home() {
           <div className="mt-8 sm:mt-12 text-center">
             <Link
               to="/quiz"
-              className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity touch-manipulation active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity touch-manipulation active:scale-[0.98]"
             >
-              🔥 Yes, I Want to Improve My Memory — Start Free
+              Yes, I Want to Improve My Memory — Start Free
             </Link>
           </div>
         </section>
@@ -254,8 +254,8 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-8 sm:mt-10 text-center">
-            <Link to="/quiz" className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity touch-manipulation active:scale-[0.98]">
-              🔥 Take the Free Assessment — See Your Plan
+            <Link to="/quiz" className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity touch-manipulation active:scale-[0.98]">
+              Take the Free Assessment — See Your Plan
             </Link>
           </div>
         </section>
@@ -310,8 +310,8 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-8 sm:mt-10 text-center">
-            <Link to="/quiz" className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity touch-manipulation active:scale-[0.98]">
-              🔥 Start My Free Assessment Now
+            <Link to="/quiz" className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity touch-manipulation active:scale-[0.98]">
+              Start My Free Assessment Now
             </Link>
           </div>
         </section>
@@ -330,8 +330,8 @@ export default function Home() {
               <li>✓ Cancel anytime after that</li>
             </ul>
             <p className="text-[var(--color-accent)] font-semibold text-xs sm:text-sm mb-4 sm:mb-6">Nothing to lose. Everything to gain. Start your free assessment below.</p>
-            <Link to="/quiz" className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity touch-manipulation active:scale-[0.98]">
-              🔥 Take the Free Assessment — 2 Min
+            <Link to="/quiz" className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity touch-manipulation active:scale-[0.98]">
+              Take the Free Assessment — 2 Min
             </Link>
           </div>
         </section>
@@ -349,8 +349,8 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-8 sm:mt-10 text-center">
-            <Link to="/quiz" className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity touch-manipulation active:scale-[0.98]">
-              🔥 Start Free Assessment
+            <Link to="/quiz" className="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-3.5 sm:py-4 min-h-[52px] rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] font-bold text-sm sm:text-base shadow-lg hover:opacity-95 transition-opacity touch-manipulation active:scale-[0.98]">
+              Start Free Assessment
             </Link>
           </div>
         </section>
@@ -390,9 +390,9 @@ export default function Home() {
             </p>
             <Link
               to="/quiz"
-              className="inline-flex items-center justify-center gap-2 px-5 sm:px-10 py-4 sm:py-5 min-h-[52px] rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-bold text-base sm:text-lg shadow-lg hover:opacity-95 transition-opacity border-2 border-transparent hover:border-[var(--color-accent-hover)] touch-manipulation active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 px-5 sm:px-10 py-4 sm:py-5 min-h-[52px] rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] font-bold text-base sm:text-lg shadow-lg hover:opacity-95 transition-opacity border-2 border-transparent hover:border-[var(--color-accent-hover)] touch-manipulation active:scale-[0.98]"
             >
-              🔥 Yes — I Want to Test My Cognitive Health (Free)
+              Yes — I Want to Test My Cognitive Health (Free)
             </Link>
             <p className="text-xs sm:text-sm text-[var(--color-text-muted)] mt-4 sm:mt-6">100% private · Cancel anytime</p>
           </div>

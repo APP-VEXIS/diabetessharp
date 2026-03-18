@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 import {
   MEMORY_RECIPES,
   MEAL_PLAN_7_DAY,
@@ -57,12 +58,12 @@ function RecipeDetail({ recipe, onClose }: { recipe: MemoryRecipe; onClose: () =
           </div>
 
           <div className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-            <h4 className="text-xs font-semibold text-[var(--color-accent)] mb-1">💡 Ingredient tips</h4>
+            <h4 className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Ingredient tips</h4>
             <p className="text-xs text-[var(--color-text-muted)]">{recipe.ingredientTips}</p>
           </div>
 
           <div className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-            <h4 className="text-xs font-semibold text-[var(--color-accent)] mb-1">⚡ Quick prep</h4>
+            <h4 className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-1">Quick prep</h4>
             <p className="text-xs text-[var(--color-text-muted)]">{recipe.quickPrepTip}</p>
           </div>
 
@@ -313,6 +314,15 @@ export function NutritionPage() {
         </div>
       )}
 
+      <HowToUseBanner
+        pageKey="ns-nutrition"
+        steps={[
+          "Browse the tabs: Recipes, Meal Plan, and Shopping List.",
+          "Take a food photo to get an AI estimate of calories and brain-health nutrients.",
+          "Brain-friendly recipes are rich in omega-3, antioxidants and anti-inflammatory foods.",
+        ]}
+      />
+
       {/* Weekly recipes update notice */}
       <div className="mb-6 rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)]/20 px-4 py-3 flex flex-wrap items-start gap-3">
         <span className="text-2xl shrink-0" aria-hidden>🔄</span>
@@ -331,7 +341,7 @@ export function NutritionPage() {
           <div className="text-[10px] text-[var(--color-text-muted)]">Today&apos;s Calories</div>
         </div>
         <div className="glass-card p-4 text-center">
-          <div className="text-lg mb-0.5">⚡</div>
+          
           <div className="font-display font-bold text-lg text-[var(--color-text)]">{todayProtein}g</div>
           <div className="text-[10px] text-[var(--color-text-muted)]">Protein</div>
         </div>
@@ -350,7 +360,7 @@ export function NutritionPage() {
             onClick={() => setActiveTab(tab.id)}
             title={tab.label}
             aria-label={tab.label}
-            className={`shrink-0 flex flex-col items-center justify-center min-w-[56px] w-14 py-2 rounded-xl transition-all ${
+            className={`shrink-0 flex flex-col items-center justify-center min-w-[56px] w-14 py-2 rounded-xl transition-colors ${
               activeTab === tab.id ? "nav-active text-[var(--color-accent-text)]" : "bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
             }`}
           >
@@ -370,7 +380,7 @@ export function NutritionPage() {
                 key={f.value}
                 type="button"
                 onClick={() => setMealFilter(f.value)}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-all ${
+                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-colors ${
                   mealFilter === f.value ? "nav-active text-[var(--color-accent-text)]" : "bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                 }`}
               >
@@ -452,7 +462,7 @@ export function NutritionPage() {
             <button
               type="button"
               onClick={openPrintShoppingList}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[var(--gradient-accent)] text-white font-semibold text-sm shadow-lg shadow-[var(--color-accent-glow)]/40 hover:opacity-95 hover:shadow-[var(--shadow-glow)] transition-all border-2 border-[var(--color-accent)]"
+              className="btn btn-primary text-sm"
             >
               <span className="text-lg">📄</span>
               <span>Download your list as PDF here</span>
@@ -621,7 +631,7 @@ export function NutritionPage() {
               type="button"
               onClick={handleGenerateRecipe}
               disabled={!aiInput.trim() || aiLoading}
-              className="w-full py-3 rounded-xl bg-[var(--gradient-accent)] text-[var(--color-accent-text)] font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-text)] font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {aiLoading ? (
                 <>
@@ -629,7 +639,7 @@ export function NutritionPage() {
                   Generating...
                 </>
               ) : (
-                <>✨ Generate recipe</>
+                <>Generate recipe</>
               )}
             </button>
           </div>

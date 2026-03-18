@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from "react";
+import { HeartHandshake, Send } from "lucide-react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -170,19 +172,28 @@ export function SofiaPage() {
         <p className="text-sm text-[var(--color-text-muted)] mt-0.5">Your diabetes companion — routine, meals, and support.</p>
       </div>
 
+      <HowToUseBanner
+        pageKey="sofia"
+        steps={[
+          "Type your question or tap a suggested topic to start the conversation.",
+          "Sofia is your daily wellness companion — ask about meals, stress, sleep or habits.",
+          "Conversations stay private on your device and are never uploaded.",
+        ]}
+      />
+
       <div className="glass-card flex-1 flex flex-col min-h-0 overflow-hidden">
         <div ref={listRef} className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((msg, i) => (
             <div key={i} className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
               {msg.role === "assistant" && (
                 <div className="w-9 h-9 rounded-xl bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/30 flex items-center justify-center shrink-0">
-                  <span className="text-lg">💬</span>
+                  <HeartHandshake size={18} className="text-[var(--color-accent)]" aria-hidden />
                 </div>
               )}
               <div
                 className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                   msg.role === "user"
-                    ? "bg-[var(--gradient-accent)] text-white ml-auto"
+                    ? "bg-[var(--color-accent)] text-white ml-auto"
                     : "bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)]"
                 }`}
               >
@@ -193,7 +204,7 @@ export function SofiaPage() {
           {isTyping && (
             <div className="flex gap-3">
               <div className="w-9 h-9 rounded-xl bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/30 flex items-center justify-center shrink-0">
-                <span className="text-lg">💬</span>
+                <HeartHandshake size={18} className="text-[var(--color-accent)]" aria-hidden />
               </div>
               <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl px-4 py-2.5 flex gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-bounce" style={{ animationDelay: "0ms" }} />
@@ -214,7 +225,7 @@ export function SofiaPage() {
                 type="button"
                 onClick={() => send(prompt)}
                 disabled={isTyping}
-                className="text-left text-sm px-4 py-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all disabled:opacity-50 font-medium"
+                className="text-left text-sm px-4 py-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-colors disabled:opacity-50 font-medium"
               >
                 {prompt}
               </button>
@@ -235,12 +246,10 @@ export function SofiaPage() {
             <button
               type="submit"
               disabled={!input.trim() || isTyping}
-              className="shrink-0 w-12 h-[44px] rounded-xl bg-[var(--gradient-accent)] text-white flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none transition-opacity"
+              className="shrink-0 w-12 h-[44px] rounded-xl bg-[var(--color-accent)] text-white flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none transition-opacity"
               aria-label="Send"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
+              <Send size={18} aria-hidden />
             </button>
           </div>
         </form>

@@ -494,7 +494,7 @@ export function Quiz() {
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2.5">
             <div
-              className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+              className="bg-blue-600 h-2.5 rounded-full transition-colors duration-300"
               style={{
                 width: `${((currentStep + 1) / QUIZ_QUESTIONS.length) * 100}%`,
               }}
@@ -514,7 +514,7 @@ export function Quiz() {
               question.options.map((option) => (
                 <label
                   key={option.value}
-                  className="flex items-center min-h-[48px] py-3 px-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 active:bg-blue-100 transition-all touch-manipulation select-none"
+                  className="flex items-center min-h-[48px] py-3 px-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 active:bg-blue-100 transition-colors touch-manipulation select-none"
                 >
                   <input
                     type="radio"
@@ -539,7 +539,7 @@ export function Quiz() {
                 return (
                   <label
                     key={option.value}
-                    className="flex items-center min-h-[48px] py-3 px-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 active:bg-blue-100 transition-all touch-manipulation select-none"
+                    className="flex items-center min-h-[48px] py-3 px-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 active:bg-blue-100 transition-colors touch-manipulation select-none"
                   >
                     <input
                       type="checkbox"

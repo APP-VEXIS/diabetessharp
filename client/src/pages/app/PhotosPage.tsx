@@ -1,16 +1,39 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Camera,
+  FolderOpen,
+  Lightbulb,
+  Pin,
+  Lock,
+  Info,
+  Image,
+  Droplet,
+  Utensils,
+  Footprints,
+  Pill,
+  ClipboardList,
+  BarChart2,
+  Activity,
+  Moon,
+} from "lucide-react";
+import type { ComponentType } from "react";
+import { HowToUseBanner } from "../../components/HowToUseBanner";
 
 const HOW_IT_WORKS = `Use photos to track your progress: meals, glucose readings, or foot checks. Add a short label (e.g. "Breakfast – oatmeal", "Fasting 98", "Left foot check"). Over time you'll see how your routine and numbers evolve.`;
 
-const SUGGESTIONS = [
-  { icon: "🩸", item: "Glucose reading", tip: "Photo of your meter with the result, or a note with date and value." },
-  { icon: "🍽️", item: "Meal", tip: "What you ate — helps you match foods to your numbers later." },
-  { icon: "🦶", item: "Foot check", tip: "Daily foot check photo to spot any changes (important for diabetes)." },
-  { icon: "💊", item: "Medications", tip: "Your pill organizer or meds taken — to keep a visual log." },
-  { icon: "📋", item: "Shopping list", tip: "List or cart photo for diabetes-friendly groceries." },
-  { icon: "📊", item: "Weight / log", tip: "Scale reading or handwritten log if you track weight." },
-  { icon: "🏃", item: "Activity", tip: "Walk, gym, or any movement — to remember what you did that day." },
-  { icon: "😴", item: "Sleep / stress", tip: "Quick note or photo to track rest and how you feel." },
+const SUGGESTIONS: {
+  Icon: ComponentType<{ size?: number; className?: string }>;
+  item: string;
+  tip: string;
+}[] = [
+  { Icon: Droplet, item: "Glucose reading", tip: "Photo of your meter with the result, or a note with date and value." },
+  { Icon: Utensils, item: "Meal", tip: "What you ate — helps you match foods to your numbers later." },
+  { Icon: Footprints, item: "Foot check", tip: "Daily foot check photo to spot any changes (important for diabetes)." },
+  { Icon: Pill, item: "Medications", tip: "Your pill organizer or meds taken — to keep a visual log." },
+  { Icon: ClipboardList, item: "Shopping list", tip: "List or cart photo for diabetes-friendly groceries." },
+  { Icon: BarChart2, item: "Weight / log", tip: "Scale reading or handwritten log if you track weight." },
+  { Icon: Activity, item: "Activity", tip: "Walk, gym, or any movement — to remember what you did that day." },
+  { Icon: Moon, item: "Sleep / stress", tip: "Quick note or photo to track rest and how you feel." },
 ];
 
 type MemoryPhoto = { id: string; label: string; date: string; imageUrl?: string };
@@ -191,7 +214,7 @@ export function PhotosPage() {
               <button
                 type="button"
                 onClick={savePendingPhoto}
-                className="flex-1 py-2.5 rounded-xl bg-[var(--gradient-accent)] text-white font-semibold text-sm"
+                className="flex-1 py-2.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm"
               >
                 Save photo
               </button>
@@ -242,7 +265,7 @@ export function PhotosPage() {
               <button
                 type="button"
                 onClick={() => { updatePhotoLabel(selectedPhoto.id, editingLabel); setSelectedPhoto(null); }}
-                className="flex-1 py-2.5 rounded-xl bg-[var(--gradient-accent)] text-white font-semibold text-sm"
+                className="flex-1 py-2.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm"
               >
                 Save description
               </button>
@@ -274,7 +297,7 @@ export function PhotosPage() {
             <button
               type="button"
               onClick={capturePhoto}
-              className="px-6 py-3 rounded-xl bg-[var(--gradient-accent)] text-white font-semibold text-sm shadow-lg"
+              className="px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm shadow-lg"
             >
               Capture
             </button>
@@ -288,20 +311,29 @@ export function PhotosPage() {
         </div>
       )}
 
-      <div className="mb-6 flex items-center gap-2">
-        <span className="text-xl">📷</span>
+      <div className="mb-6 flex items-center gap-3">
+        <Camera size={24} className="text-[var(--color-accent)] shrink-0" aria-hidden />
         <div>
-          <h1 className="text-xl font-display font-bold text-[var(--color-text)]">Remember Where You Put Things</h1>
+          <h1 className="text-xl font-display font-bold text-[var(--color-text)]">Photo Diary</h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-0.5">
-            Take photos of where you store daily items — keys, glasses, wallet — so you can find them later.
+            Track meals, readings, and daily health moments with photos — and match them to your numbers over time.
           </p>
         </div>
       </div>
 
+      <HowToUseBanner
+        pageKey="photos"
+        steps={[
+          "Tap the camera icon to take a photo or upload one from your gallery.",
+          "Add a short description so you can match the photo to your glucose readings later.",
+          "Photos are stored only on your device and are never uploaded without your consent.",
+        ]}
+      />
+
       {/* How it works */}
       <div className="glass-card p-5 mb-6">
         <h3 className="text-sm font-semibold text-[var(--color-text)] mb-2 flex items-center gap-2">
-          <span>💡</span> How to use
+          <Lightbulb size={16} className="text-[var(--color-accent)] shrink-0" /> How to use
         </h3>
         <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{HOW_IT_WORKS}</p>
       </div>
@@ -309,7 +341,7 @@ export function PhotosPage() {
       {/* What to photograph */}
       <div className="glass-card p-5 mb-6">
         <h3 className="text-sm font-semibold text-[var(--color-text)] mb-3 flex items-center gap-2">
-          <span>📌</span> Suggestions — what to photograph
+          <Pin size={16} className="text-[var(--color-accent)] shrink-0" /> Suggestions — what to photograph
         </h3>
         <p className="text-xs text-[var(--color-text-muted)] mb-4">
           Tap a suggestion to open the camera and take a photo — the label will be set for you. Add a description so you remember where you put it.
@@ -323,9 +355,11 @@ export function PhotosPage() {
                   setNewLabel(s.item);
                   openCamera();
                 }}
-                className="w-full flex gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-left hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-all"
+                className="w-full flex gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-left hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-colors"
               >
-                <span className="text-2xl shrink-0" aria-hidden>{s.icon}</span>
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-accent-soft)] flex items-center justify-center shrink-0">
+                  <s.Icon size={18} className="text-[var(--color-accent)]" aria-hidden />
+                </div>
                 <div className="min-w-0 flex-1">
                   <span className="font-medium text-sm text-[var(--color-text)]">{s.item}</span>
                   <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{s.tip}</p>
@@ -341,14 +375,14 @@ export function PhotosPage() {
       <div className="glass-card p-5 mb-6">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm font-semibold text-[var(--color-text)] flex items-center gap-2">
-            <span>📷</span> Add photo
+            <Camera size={16} className="text-[var(--color-accent)] shrink-0" /> Add photo
           </h3>
           <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded bg-[var(--color-success)]/20 text-[var(--color-success)] border border-[var(--color-success)]/30">
-            🔒 Private
+            <Lock size={11} /> Private
           </span>
         </div>
         <div className="rounded-xl bg-[var(--color-info)]/10 border border-[var(--color-info)]/30 p-3 mb-4 flex items-start gap-2">
-          <span className="text-[var(--color-info)] text-lg" aria-hidden>ℹ️</span>
+          <Info size={18} className="text-[var(--color-info)] shrink-0 mt-0.5" aria-hidden />
           <p className="text-sm text-[var(--color-text-muted)]">
             Take a photo of the <strong>spot</strong> where you put something (e.g. the open drawer, the hook, the shelf), then add a short label like &quot;Keys – top drawer&quot; or &quot;Glasses – nightstand&quot;. Your photos stay private and only you can see them.
           </p>
@@ -378,17 +412,17 @@ export function PhotosPage() {
           <button
             type="button"
             onClick={openCamera}
-            className="flex flex-col items-center justify-center gap-2 min-h-[100px] rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-all text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+            className="flex flex-col items-center justify-center gap-2 min-h-[100px] rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
           >
-            <span className="text-3xl">📷</span>
+            <Camera size={32} aria-hidden />
             <span className="font-medium text-sm">Take Photo</span>
           </button>
           <button
             type="button"
             onClick={handleFileClick}
-            className="flex flex-col items-center justify-center gap-2 min-h-[100px] rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-all text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+            className="flex flex-col items-center justify-center gap-2 min-h-[100px] rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-hover)] transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
           >
-            <span className="text-3xl">📁</span>
+            <FolderOpen size={32} aria-hidden />
             <span className="font-medium text-sm">Choose File</span>
           </button>
         </div>
@@ -410,7 +444,7 @@ export function PhotosPage() {
         </p>
         {memoryPhotos.length === 0 ? (
           <div className="min-h-[200px] rounded-xl border-2 border-dashed border-[var(--color-border)] flex flex-col items-center justify-center gap-3 py-12 px-4">
-            <span className="text-5xl text-[var(--color-text-muted)] opacity-60">🖼️</span>
+            <Image size={48} className="text-[var(--color-text-muted)] opacity-60" aria-hidden />
             <p className="text-sm text-[var(--color-text-muted)] text-center max-w-[280px]">
               No photos yet. Tap a suggestion above to take a photo, or add one with Take Photo / Choose File. When you forget where something is, open this album.
             </p>
@@ -422,7 +456,7 @@ export function PhotosPage() {
                 key={p.id}
                 type="button"
                 onClick={() => openPhotoDetail(p)}
-                className="rounded-xl overflow-hidden bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-accent)]/50 transition-all text-left"
+                className="rounded-xl overflow-hidden bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-accent)]/50 transition-colors text-left"
               >
                 {p.imageUrl ? (
                   <img
@@ -431,7 +465,9 @@ export function PhotosPage() {
                     className="w-full aspect-square object-cover bg-[var(--color-card)]"
                   />
                 ) : (
-                  <div className="w-full aspect-square flex items-center justify-center bg-[var(--color-card)] text-4xl">🖼️</div>
+                  <div className="w-full aspect-square flex items-center justify-center bg-[var(--color-card)] text-[var(--color-text-muted)]">
+            <Image size={40} aria-hidden />
+          </div>
                 )}
                 <div className="p-2 min-w-0">
                   <p className="font-medium text-xs text-[var(--color-text)] truncate">{p.label}</p>
