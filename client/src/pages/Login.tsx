@@ -196,6 +196,27 @@ export function Login() {
 
         </form>
 
+        {/* Test credentials */}
+        <button
+          type="button"
+          onClick={() => { setEmail("test@diabetessharp.com"); setPassword("Test123!"); }}
+          className="w-full mt-5 rounded-xl px-4 py-3 text-left transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+          style={{
+            background: "rgba(255,255,255,0.07)",
+            border: "1px dashed rgba(255,255,255,0.20)",
+          }}
+        >
+          <p className="text-[10px] font-bold uppercase tracking-widest mb-1.5" style={{ color: "rgba(255,255,255,0.45)" }}>
+            Credenciais de teste — clique para preencher
+          </p>
+          <p className="text-xs font-mono" style={{ color: "rgba(255,255,255,0.70)" }}>
+            test@diabetessharp.com
+          </p>
+          <p className="text-xs font-mono" style={{ color: "rgba(255,255,255,0.70)" }}>
+            Test123!
+          </p>
+        </button>
+
         {/* Footer links */}
         <div className="mt-5 flex items-center justify-between text-sm">
           <button
